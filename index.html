@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftScrub Co. - Cleaning Order Form</title>
+    <style>
+        :root {
+            --primary-color: #1ABCFE; /* A blue color */
+            --secondary-color: #FF5100; /* A orange color */
+            --accent-color: #F0F0F0; /* A grey color */
+            --background-color: #ccc; /* A light grey background */
+            --text-color: #404040; /* A dark grey text color */
+        }
+        body {
+          font-family: 'Lato', 'Lora', 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-weight: 600;
+          color: var(--text-color);
+        }
+        div {
+          justify-content: center;
+          display: flex;
+          margin: 15px;
+        }
+        #main {
+           margin: 1px; 
+        }
+        form {
+          flex: 4;
+          margin: 0px 300px 0px 10px;
+          max-width: 1800px;
+        }
+        aside {
+          flex: 1;
+          padding: 10px;
+          border: 1px solid var(--background-color);
+          border-radius: 10px;
+          background-color: #f9f9f9;
+          position: fixed; top: 105px; right: 10px;
+          box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+        }
+        aside div {
+          display: block;
+          margin: 0;
+        }
+        section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid var(--background-color);
+            border-radius: 20px;
+            background-color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+          padding: 0px 0px 0px 15px;
+          color: #C0C0C0;
+        }
+        h3 {
+          margin-top: 20px;
+        }
+        input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], select, textarea {
+          border: 1px solid var(--background-color);
+          border-radius: 5px;
+          text-align: center;
+          width: 100%;
+        }
+
+        /* User Type Selection */
+        .lab {
+          display: flex;
+          justify-content: center; 
+        }
+        .lab label {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        /* Apartment */
+        .apartment {
+            align-items: center;
+        }
+        .apartment div {
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+        }
+        #apt label {
+          margin: 0 15px;
+        }
+        #apt-1 {
+          flex: 1;
+        }
+        #apt-2 {
+          flex: 1;
+        }
+        .plus, .minus {
+            border: none;
+            width: 34px;
+            height: 34px;
+            font-weight: bold;
+            font-size: xx-large;
+            color: white;
+            background-color: var(--primary-color);
+        }
+        .minus {
+            border-radius: 10px 0px 0px 10px;
+        }
+        .plus {
+            border-radius: 0px 10px 10px 0px;
+        }
+        #rooms, #bathrooms {
+          width: 40px;
+          height: 30px;
+          border-radius: 0px;
+        }
+        #extra-rooms {
+          justify-content: space-between;
+        }
+        #balconySize,#garageSize, #basementSize {
+          width: 74px;
+        }
+        .container {
+          display: grid;                  
+          grid-template-columns: repeat(2, 1fr); 
+          gap: 10px;   
+          margin: 0px;                    
+        }
+        .toggle-switch {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .toggle-switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .slider {
+          position: relative;
+          width: 38px;
+          height: 19px;
+          background-color: var(--background-color);
+          border-radius: 34px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        .slider::before {
+          content: '';
+          position: absolute;
+          height: 15px;
+          width: 15px;
+          left: 2px;
+          bottom: 2px;
+          background-color: white;
+          border-radius: 50%;
+          transition: transform 0.3s ease;
+        }
+        .toggle-switch input:checked + .slider {
+          background-color: var(--primary-color);
+        }
+        .toggle-switch input:checked + .slider::before {
+          transform: translateX(20px);
+        }
+
+        /* Microservices */
+        #microservices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 15px;
+            justify-content: space-between;
+            margin: 0px 0px 15px 0px; 
+        }
+        #microservices label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            justify-content: space-between; 
+            margin: 0; 
+        }
+        #microservices label input {
+          margin-right: 10px; 
+        }
+        #microservices label span {
+          margin-left: auto; 
+          font-weight: bold;
+          color: #007BFF;
+        }
+
+        /* Additonals */
+        #additionals label{
+          flex: 1;
+        }
+
+        /* Frequency */
+        #motivation {
+          font-family: 'Gill Sans';
+          color:var(--secondary-color);
+        }
+        #frequencyCount, #frequencyPeriod {
+          align-items: center;
+        }
+
+        /* House Details */
+        .details {
+          color: #C0C0C0;
+          font-weight: 400;
+          padding-bottom: 15px;
+        }
+        .address-inputs, #codes-section {
+          justify-content: space-between;
+          padding-bottom: 5px;
+          margin: 0px 5px;
+        }
+        .address-inputs label {
+          margin-bottom: 10px;
+        }
+        .address-inputs input {
+          width: 55px;
+          height: 30px;
+        }
+        .address-inputs input[name="street"] {
+          width: 270px;
+          margin-left: 5px;
+        }
+        .address-inputs input[name="city"], .address-inputs input[name="postalCode"] {
+          width: 80px;
+        }
+        .entrance-toggle {
+          text-align: center;
+          margin: 15px 0;
+        }
+        #codes-section label {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: column;
+          text-align: left;
+        }
+        #codes-section input {
+          width: 120px;
+          height: 30px;
+        }
+        #personal {
+          padding: 0px 10px;
+          justify-content: space-between; 
+          padding: 0px 5px;
+        }
+        #personal input {
+          width: 100px;
+          height: 30px;
+        }
+        #personal input[name="email"] {
+          width: 200px;
+        } 
+        .textarea-container {
+          text-align: left; 
+          padding: 0px 5px; 
+          display: block;
+        }
+        .textarea-container label {
+            margin-bottom: 5px; 
+        }
+        textarea {
+            width: 100%; 
+            height: 70px; 
+            border: 1px solid var(--background-color);
+            text-align: left;
+        }
+        
+        /* Consent */
+        #consent {
+          text-align: left;
+          padding-bottom: 20px;
+        }
+
+        /* Submissions */
+        #makeOrder {
+          width: 280px;
+          height: 40px;
+          font-weight: bold;
+          background-color: var(--secondary-color); 
+          color: white;
+          border: none;
+          border-radius: 4px;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        #makeOrder:disabled {
+          background-color: var(--background-color); 
+          cursor: not-allowed;
+        }
+        #makeOrder:hover:not(:disabled) {
+          background-color: #DD4600; 
+        }
+
+        /* summary */
+        #summary-card {
+          min-width: 220px;
+          border: 2px solid grey; 
+          border-radius: 10px; 
+          padding: 15px; 
+          background-color: white;
+          box-shadow: 0 2px 5px rgba(0, 70, 85, 0.1); 
+        }
+        #summary-card h2 {
+          text-align: center;
+        }
+        #summary-card div {
+            margin: 10px 0px;
+        }
+        .summary-item, .calculation-item {
+          display: flex;
+          justify-content: space-between;
+        }
+        #orders {
+          font-weight: 400;
+          font-size: small;
+          color: #333;
+        }
+        #calculations {
+          font-size: small;
+          font-weight: bold;
+        }
+        #discount,#to-pay, #total {
+          color: #000;;
+        }
+
+        /* messages and warnings */
+        .dynamic-message {
+          font-family: 'Gill Sans'; /* Regular font */
+          color:red;
+          font-size: medium;
+          font-weight: 400;
+          transition: opacity 1s ease-in-out; /* Smooth transition for fading */
+          opacity: 1; /* Start fully visible */
+        }
+        #dynamic-message-1 {
+          color: #333;
+          font-size: large;
+          font-weight: bold;
+        }
+        .greyed-out {
+          opacity: 0.5; /* Make it semi-transparent */
+          pointer-events: none; /* Disable interaction */
+          background-color: #e2e2e2;
+        }
+
+        /* Styles for loading overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top of everything */
+        }
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey border */
+            border-top: 8px solid #3498db; /* Blue border top */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        /* Keyframes for the spinning animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Style for the form blackout */
+        #cleaning-order-form.loading {
+            opacity: 0.5; 
+            pointer-events: none; 
+        }
+
+        /* Responsive Layout - Small Screens */
+        @media (max-width: 780px) {
+            section {
+                display: block;
+            }
+            aside {
+                display: none; 
+                margin-left: 0; 
+                margin-top: 20px; 
+            }
+            div {
+                text-align: left;
+                flex-direction: column; 
+            }
+            #apt .apartment div {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                align-items: center;          
+                justify-items: center;        
+                gap: 10px;  
+                max-height: 50px;           
+            }
+            .plus, .minus {
+                width: 100%; 
+                height: 100%; 
+                text-align: center;
+            }
+            #rooms, #bathrooms {
+                text-align: center; 
+                margin: 2px;
+                width: 100%;
+            }
+            
+            #summary-card {
+                margin: 0;
+                border: none !important;
+            }
+            /* Style for summary item content */
+            .summary-item, .calculation-item {
+                flex-direction: row;
+                margin: 0px;
+                font-size: medium;
+            }
+            .summary-item span:first-child,
+            .calculation-item span:first-child {
+                text-align: left; 
+                width: 58%;       
+                display: inline-block; 
+            }
+
+            .summary-item span:last-child,
+            .calculation-item span:last-child {
+                text-align: right; 
+                width: 42%;        
+                display: inline-block; 
+            }
+            #orders, #calculations {
+                margin: 0px;
+            }
+            hr {
+                color: var(--background-color); /* Replace "red" with your desired color */
+                background-color: var(--background-color); /* For older browsers */
+                width: 100%;
+                height: 2px;          /* Adjust height for visibility */
+                border: 0;            /* Remove default border */
+                margin-bottom: 20px;
+            }
+            /* Form Container */
+            #cleaning-order-form, aside {
+                margin: 20px auto;
+                padding: 20px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            #cleaning-order-form {
+                max-width: 800px;
+            }           
+            #extra-rooms {
+                margin-top: 30px;
+                text-align: left;
+            }
+            #extra-rooms label {
+                flex-basis: calc(20% - 5px);
+                display: flex;
+                align-items: center;
+            }
+            #extra-rooms input{
+                padding-right: 10px;
+            }
+            #extra-rooms input[type='number']{
+                width: 84px;
+                margin-left: auto;
+            }
+            #private--house {
+                display: block;
+                text-align: center;
+            }
+            /* Labels */
+            label {
+                font-size: 16px;
+                display: block;
+                margin-bottom: 5px;
+            }
+            /* Inputs */
+            input, select, textarea {
+                padding: 8px;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            #street input {
+                min-width: 280px;
+            }
+            input[name="city"] {
+                min-width: 84px;
+            }
+            input[name="postalCode"] {
+                min-width: 100px; 
+            }
+            #codes-section label {
+                display: block;
+                min-width: 180px;
+            }
+            #codes-section input {
+                min-width: 154px;
+            }
+            #details, #personal {
+                padding: 0;
+            }
+            #personal input[name="name"] {
+                min-width: 200px;
+            }
+            #placingOrder div {
+                align-items: center;
+            }
+            #consent label {
+                margin-bottom: 15px;
+            }
+        }
+        @media (min-width: 780px) {
+            #small-sum {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>SwiftScrub Co Package Builder</h1>
+    </div>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <div id="main" style="display: flex;">
+        <form id="cleaning-order-form">
+            <!-- User Type Selection -->
+            <section>
+                <h2>CLIENT</h2>
+                <div class="lab">
+                    <label>
+                        <input type="radio" name="userType" value="individual" checked>
+                        Individual
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="legalEntity">
+                        Legal Entity
+                    </label>
+                </div>
+            </section>
+
+            <!-- Cleaning Options -->
+            <section>
+                <h2>CLEANING TYPE</h2>
+                <p><span class="dynamic-message" id="dynamic-message-0"></span></p>
+                <div class="lab">
+                    <label>
+                        <input type="radio" name="cleaningType" value="regular" checked>
+                        Regular Cleaning
+                    </label>
+                    <label>
+                        <input type="radio" name="cleaningType" value="deep">
+                        Deep Cleaning
+                    </label>
+                    <label>
+                        <input type="radio" name="cleaningType" value="custom">
+                        Custom Cleaning
+                    </label>
+                    <label>
+                        <input type="radio" name="cleaningType" value="postRenovation">
+                        Post-Renovation Cleaning
+                    </label>
+                </div>
+            </section>
+
+            <!-- Apartment Details -->
+            <section>
+              <h2>APARTMENT</h2>
+              <div id="apt">
+                <div class="apartment" id="apt-1">
+                  <label>Room(s)</label>
+                  <div>
+                      <button type="button" class="minus">-</button>
+                      <input type="number" id="rooms" name="rooms" value="1" readonly>
+                      <button type="button" class="plus">+</button>
+                  </div>
+                </div>
+                <div class="apartment" id="apt-2">
+                  <label>Bathroom(s)</label>
+                  <div>
+                      <button type="button" class="minus">-</button>
+                      <input type="number" id="bathrooms" name="bathrooms" value="1" readonly>
+                      <button type="button" class="plus">+</button>
+                  </div>
+                </div>                
+              </div>
+              <span id="size-message"></span>
+              <div id="extra-rooms">
+                <div>
+                    <label>
+                        <input type="checkbox" id="kitchen" name="kitchen" checked>
+                        Kitchen
+                    </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="checkbox" id="corridor" name="corridor" checked>
+                        Corridors
+                  </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="balcony" name="balcony">
+                        Balcony 
+                        <input type="number" id="balconySize" name="balconySize" placeholder="Size (m²)">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="garage" name="garage">
+                        Garage 
+                        <input type="number" id="garageSize" name="garageSize" placeholder="Size (m²)">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="basement" name="basement">
+                        Basement 
+                        <input type="number" id="basementSize" name="basementSize" placeholder="Size (m²)">
+                    </label>
+                </div>
+              </div>                   
+              <div id="private--house">
+                <label class="toggle-switch">
+                    <span>Private House</span>
+                    <input type="checkbox" id="privateHouse" name="privateHouse">
+                    <span class="slider"></span>
+                </label>
+              </div>
+            </section>
+
+            <!-- Microservices -->
+            <section id="microservices-section">
+                <span id="dynamic-message-1"></span>
+                <h2>MICROSERVICES</h2>
+                <div class="microservices" id="microservices">
+                    <label><input type="checkbox" name="microwave"> Microwave <span>PLN 20</span></label>
+                    <label><input type="checkbox" name="oven"> Oven <span>PLN 37</span></label>
+                    <label><input type="checkbox" name="washingDishes"> Washing Dishes <span>PLN 25</span></label>
+                    <label><input type="checkbox" name="kitchenCabinets"> Kitchen Cabinets <span>PLN 52</span></label>
+                    <label><input type="checkbox" name="refrigerator"> Refrigerator <span>PLN 40</span></label>
+                    <label><input type="checkbox" name="closet"> Closet <span>PLN 25</span></label>
+                    <label><input type="checkbox" name="windows"> Windows <span>PLN 40</span></label>
+                    <label><input type="checkbox" name="wardrobe"> Wardrobe <span>PLN 30</span></label>
+                    <label><input type="checkbox" name="bureau"> Bureau/Drawers <span>PLN 17</span></label>
+                    <label><input type="checkbox" name="toiletCabinets"> Toilet Cabinets <span>PLN 20</span></label>
+                    <label><input type="checkbox" name="additionalHours"> Additional Hours <span>PLN 48</span></label>
+                    <label><input type="checkbox" name="wateringPlants"> Watering Plants <span>PLN 12</span></label></label>
+                </div>
+            </section>
+
+            <!-- Additional Services -->
+            <section class="microservices" id="additionals">
+                <h2>ADDITIONAL</h2>
+                <div>
+                    <label><input type="checkbox" name="organicProducts" id="organicProducts"> Organic Products</label>
+                    <label><input type="checkbox" name="orderVacuum" id="orderVacuum"> Order Vacuum</label>
+                </div>
+            </section>
+
+            <!-- Frequency -->
+            <section>
+                <h2>FREQUENCY</h2>
+                <span id="motivation">Regular cleanings unlock greater discounts!</span>
+                <div class="container">
+                    <div class="box">
+                        <label>Number of Visits:
+                            <select id="frequencyCount">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                            </select>
+                        </label>
+                        <label>Per:
+                            <select id="frequencyPeriod">
+                                <option value="week">Week</option>
+                                <option value="month">Month</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="box">
+                        <label>Date and Time:
+                            <input type="date" id="cleaningDate" required>
+                            <input type="time" id="cleaningTime" required>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Address -->
+            <section class="details">
+                <h2>ADDRESS</h2>
+                <div class="address-inputs">
+                    <label>
+                        City Name <br>
+                        <input type="text" name="city" placeholder="Warsaw" disabled>
+                    </label>
+                    <label id="street">
+                        Street Name <br>
+                        <input type="text" name="street" placeholder="First Street" required>
+                    </label>
+                    <label>
+                        Building Number <br>
+                        <input type="text" name="buildingNumber" placeholder="01" required>
+                    </label>
+                    <label>
+                        Apartment Number <br>
+                        <input type="text" name="apartmentNumber" placeholder="01" required>
+                    </label>
+                    <label>
+                        Postal Code <br>
+                        <input type="text" name="postalCode" placeholder="01-001" required>
+                    </label>
+                </div>
+
+                <div class="entrance-toggle">
+                    <label>
+                        <input type="checkbox" id="meetAtEntrance">
+                        Meet at the entrance
+                    </label>
+                </div>
+            
+                <div id="codes-section">
+                    <label>
+                        Gate Code <br>
+                        <input type="text" name="gateCode" placeholder="01 Key 0985 Bell">
+                    </label>
+                    <label>
+                        Entrance Code <br>
+                        <input type="text" name="entranceCode" placeholder="Key 0985 Bell">
+                    </label>
+                    <label>
+                        Apartment Code <br>
+                        <input type="text" name="apartmentCode" placeholder="0202">
+                    </label>
+                </div>
+            </section>
+
+            <!-- Contact -->
+            <section class="details">
+                <h2>CONTACT DETAILS</h2>
+                <div id="personal">
+                    <label>Name <br><input type="text" name="name" required></label>
+                    <label>Telephone <br><input type="tel" name="telephone" pattern="^\d{9,}$" required></label>
+                    <label>Email <br><input type="email" name="email" required></label>
+                </div>
+                <div class="textarea-container">
+                    <label id="add-text">Additional Information <br></label>
+                    <textarea name="additionalInfo" placeholder="Contact me using WhatsApp/Telegram/Viber e.t.c"></textarea>
+                </div>
+            </section>
+
+            <section id="small-sum"></section>
+
+            <!-- Payment Method -->
+            <section class="payment-method">
+                <h2>SELECT PAYMENT METHOD</h2>
+                <span class="dynamic-message" id="dynamic-message-2"></span>
+                <div class="lab">
+                    <label><input type="radio" name="paymentMethod" value="cash" required> Cash</label>
+                    <label><input type="radio" name="paymentMethod" value="card"> Card/Apple Pay/Google Pay</label>
+                    <label><input type="radio" name="paymentMethod" value="blik"> BLIK</label>
+                </div>
+            </section>            
+
+            <!-- Agreement -->
+            <section id="consent">
+                <span class="dynamic-message" id="dynamic-message-3"></span>
+                <br>
+                <label>
+                    <input type="checkbox" id="terms" name="terms" required>
+                    By placing an order I agree with the <a href="https://sites.google.com/d/1nGXQAC1IAmUwe-uwr1G8VJfQEkbSRF5o/p/1QDFcM0sFoTlqg3Sh7j_2l0CDMVZiL7GH/edit">Public offer agreement</a> and <a href="https://sites.google.com/d/1nGXQAC1IAmUwe-uwr1G8VJfQEkbSRF5o/p/1mThmvE23s7yRkBd_kQojdPyjzhFYvOte/edit">Privacy Policy</a>.
+                  <br>
+                </label>
+                <label>
+                    <input type="checkbox" name="marketingConsent">
+                    I consent to the processing of my personal data for marketing purposes by the administrator.
+                </label>
+                <br>
+            </section>
+
+            <!-- Order Button -->
+            <section id="placingOrder">
+                <span class="dynamic-message" id="threshold-message"></span>
+                <div>
+                    <button type="submit" id="makeOrder" disabled>MAKE ORDER FOR PLN <a id="pay-amount"></a></button>
+                </div>
+            </section>
+        </form>
+
+        <!-- Aside Summary Section -->
+        <aside>
+          <div id="summary-card">
+            <h2>Summary</h2>
+              <div id="orders">
+                <div class="summary-item">
+                    <span>Rooms:</span>
+                    <span id="summaryRooms">1</span>
+                </div>
+                <div class="summary-item">
+                    <span>Bathrooms:</span>
+                    <span id="summaryBathrooms">1</span>
+                </div>
+                <div class="summary-item">
+                    <span>Kitchen:</span>
+                    <span id="summaryKitchen">Yes</span>
+                </div>
+                <div class="summary-item">
+                  <span>Corridors:</span>
+                  <span id="summaryCorridor">Yes</span>
+                </div>
+                <div class="summary-item">
+                  <span>Balcony:</span>
+                  <span id="summaryBalcony">No</span>
+                </div>
+                <div class="summary-item">
+                  <span>Garage:</span>
+                  <span id="summaryGarage">No</span>
+                </div>
+                <div class="summary-item">
+                  <span>Basement:</span>
+                  <span id="summaryBasement">No</span>
+                </div>
+                <div class="summary-item">
+                  <span>Private House:</span>
+                  <span id="summaryPrivateHouse">No</span>
+                </div>
+                <div class="summary-item">
+                  <span>Trash Bins:</span>
+                  <span id="summaryBins">Yes</span>
+                </div>
+                <div class="summary-item">
+                  <span>Frequency:</span>
+                  <span id="summaryFrequency">1</span>
+                </div>
+            </div>
+            <div id="calculations">
+                <hr>
+                <div class="calculation-item">
+                    <span >Total Price</span>
+                    <span><span id="total">0.00</span> PLN</span>
+                </div>
+                <div class="calculation-item">
+                    <span>Discount</span>
+                    <span><span id="discount">0.00</span> PLN</span>
+                </div>
+                <hr>
+                <div class="calculation-item" id="total-to-pay">
+                    <span>To Pay</span>
+                    <span><span id="to-pay">0.00</span> PLN</span>
+                </div>
+            </div>
+          </div>
+        </aside>
+    </div>
+
+    <script>
+        // JavaScript code for dynamic functionalities
+        document.addEventListener('DOMContentLoaded', () => {
+            // Core Configuration
+            const CONFIG = {
+                baseRates: {
+                    regular: 139.00,
+                    deep: 419.00,
+                    custom: 0,
+                    postRenovation: 0
+                },
+                additionalRoomCosts: {
+                    regular: 35.45,
+                    deep: 50.00,
+                    custom: 36.20,
+                    postRenovation: 50.20
+                },
+                bathroomCosts: {
+                    regular: 25.15,
+                    deep: 37.45,
+                    custom: 25.85,
+                    postRenovation: 38.55 
+                },
+                kitchenCosts: {
+                    custom: 41.50,
+                    postRenovation: 54.55
+                },
+                corridorCosts: {
+                    custom: 38.15,
+                    postRenovation: 49.35
+                },
+                balconyCosts: {
+                    regular: 35.30,
+                    deep: 50.00,
+                    custom: 36.20,
+                    postRenovation: 50.55
+                },
+                garageCosts: {
+                    regular: 50.15,
+                    deep: 80.20,
+                    custom: 51.75,
+                    postRenovation: 80.00
+                },
+                basementCosts: {
+                    regular: 70.35,
+                    deep: 100.00,
+                    custom: 70.10,
+                    postRenovation: 101.65
+                },
+                microservicePrices: {
+                    microwave: 20,
+                    oven: 37,
+                    washingDishes: 25,
+                    kitchenCabinets: 52,
+                    refrigerator: 40,
+                    closet: 25,
+                    windows: 40,
+                    wardrobe: 30,
+                    bureau: 17,
+                    toiletCabinets: 20,
+                    additionalHours: 48,
+                    wateringPlants: 12,
+                    organicProducts: 59,
+                    orderVacuum: 28
+                },
+                discountRates: {
+                    2: 0.05,
+                    3: 0.10,
+                    4: 0.15,
+                    5: 0.20,
+                    6: 0.25,
+                    7: 0.30
+                },
+                extraDiscount: {
+                    2: 14.50
+                },
+                thresholds: {
+                    custom: 140.00,
+                    postRenovation: 150.00
+                },
+                sizeLimitForExtraCharge: 20, // Square meters
+                extraChargeFactors: {
+                    regular: 7,
+                    custom: 7, // d value for regular/custom cleaning
+                    deep: 8,
+                    postRenovation: 8 // d value for deep/post renovation cleaning
+                }
+            };
+
+            // Utility Functions
+            const $ = selector => document.querySelector(selector);
+            const $$ = selector => document.querySelectorAll(selector);
+
+            // Counter Adjustment Function
+            function adjustCounter(elementId, delta) {
+                const input = $(`#${elementId}`);
+
+                const cleaningType = $("input[name='cleaningType']:checked").value; // Get the selected cleaning type
+
+                // Determine the minimum value based on the cleaning type
+                const minValue = (cleaningType === 'regular' || cleaningType === 'deep') ? 1 : 0;
+
+                let currentValue = parseInt(input.value) || 0; // Ensure currentValue is a number
+                // Calculate new value, ensuring it does not go below minValue
+                const newValue = Math.max(minValue, currentValue + delta);
+                
+                // const newValue = Math.max(0, currentValue + delta); // Allow zero for custom cleaning
+                input.value = newValue;
+                updateSummary();
+            }
+
+            // Reset Form for Custom and Post-Renovation Cleaning
+            function resetFormForCustomOrPost() {
+                $('#rooms').value = '0';
+                $('#bathrooms').value = '0';
+                $('#kitchen').checked = false;
+                $('#corridor').checked = false;
+                
+                // Clear summary and bill
+                $('#summaryKitchen').textContent = 'No';
+                $('#summaryCorridor').textContent = 'No';
+                
+                // Do not call updateSummary() here to avoid infinite recursion
+                const userMessage = `**You need to go above PLN ${CONFIG.thresholds.postRenovation} total under this custom/post-renovation option for order to be accepted!**`;
+
+                const messageElement = $('#dynamic-message-0');
+
+                // Set the message in the HTML element
+                messageElement.innerHTML = userMessage;
+                messageElement.style.opacity = '1';
+
+                // Function to fade out the message after 10 seconds
+                setTimeout(() => {
+                    messageElement.style.opacity = '0'; // Start fading out
+                }, 10000); // 10 seconds delay
+            }
+
+            // Calculate Base Price Based on Cleaning Type
+            function calculateBasePrice() {
+                const cleaningType = $('input[name="cleaningType"]:checked').value;
+                
+                let basePrice = CONFIG.baseRates[cleaningType] || 0; // Default to 0 if cleaningType is invalid
+
+                if (cleaningType === 'regular' || cleaningType === 'deep') {
+                    const rooms = parseInt($('#rooms').value) || 1; // Default to 1 if empty
+                    const bathrooms = parseInt($('#bathrooms').value) || 1; // Default to 1 if empty
+                    basePrice += ((rooms - 1) * CONFIG.additionalRoomCosts[cleaningType]) + // Subtract 1 because the first room is included in the base price
+                                ((bathrooms - 1) * CONFIG.bathroomCosts[cleaningType]); // Subtract 1 because the first bathroom is included in the base price
+                    
+                } else  {
+                    const roomCounter = parseInt($('#rooms').value) || 0;
+                    const bathroomCounter = parseInt($('#bathrooms').value) || 0;
+                    basePrice += ((roomCounter * CONFIG.additionalRoomCosts[cleaningType]) + bathroomCounter * CONFIG.bathroomCosts[cleaningType]); 
+                }
+                
+                return basePrice;
+            }
+
+            function promptForSize(feature) {
+                const sizeInput = $(`#${feature}Size`);
+                let validSize = false;
+            
+                while (!validSize) {
+                    const inputSize = prompt(`Please enter the size (m²) for ${feature.charAt(0).toUpperCase() + feature.slice(1)}:`);
+            
+                    if (inputSize === null) {
+                        // User canceled, uncheck the checkbox
+                        $(`#${feature}`).checked = false;
+                        sizeInput.value = ''; // Clear size input
+                        return; // Exit function
+                    }
+            
+                    const sizeValue = parseInt(inputSize);
+                    if (!isNaN(sizeValue) && sizeValue >= 0) {
+                        sizeInput.value = sizeValue; // Set valid size
+                        validSize = true; // Exit loop after setting valid size
+                    } else {
+                        alert("Please enter a valid number for size.");
+                    }
+                }
+            }    
+
+            // Calculate Additional Costs Based on Selected Features
+            function calculateAdditionalCosts() {
+                let additionalCost = 0;
+
+                // Kitchen
+                if ($('#kitchen').checked) {
+                    additionalCost += CONFIG.kitchenCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                }
+
+                // Corridors
+                if ($('#corridor').checked) {
+                    additionalCost += CONFIG.corridorCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                }
+                
+                // Balcony
+                if ($('#balcony').checked) {
+                    // Check if the size input is valid; if not, prompt for size
+                    const balconySize = parseInt($('#balconySize').value);
+
+                    if (isNaN(balconySize) || balconySize <= 0) {
+                        promptForSize('balcony');
+                    } else {
+                        // If a valid size is entered, calculate the cost
+                        const defaultCost = CONFIG.balconyCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                        additionalCost += calculateSizeBasedCost(balconySize, defaultCost);
+                    }
+                }
+                
+                // Garage
+                if ($('#garage').checked) {
+                    const garageSize = parseInt($('#garageSize').value);       
+
+                    if (isNaN(garageSize) || garageSize <= 0) {
+                        promptForSize('garage');
+                    } else {
+                        const defaultCost = CONFIG.garageCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                        additionalCost += calculateSizeBasedCost(garageSize, defaultCost);
+                    }
+                }
+                
+                // Basement
+                if ($('#basement').checked) {
+                    const basementSize = parseInt($('#basementSize').value);
+                    
+                    if (isNaN(basementSize) || basementSize <= 0) {
+                        promptForSize('basement');
+                    } else {
+                        const defaultCost = CONFIG.basementCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                        additionalCost += calculateSizeBasedCost(basementSize, defaultCost);
+                    }
+                }
+
+                return additionalCost;
+            }
+
+            // Helper function to calculate size-based cost
+            function calculateSizeBasedCost(size, defaultCost) {
+                if (size > CONFIG.sizeLimitForExtraCharge) {
+                    const extraChargeFactor = CONFIG.extraChargeFactors[$('input[name="cleaningType"]:checked').value];
+                    return defaultCost + ((size - CONFIG.sizeLimitForExtraCharge) * extraChargeFactor);
+                }
+                return defaultCost;
+            }
+
+            // Microservices Price Calculation
+            function calculateMicroservicesCost() {
+                let total = 0;
+                $$('.microservices input[type="checkbox"]:checked').forEach(checkbox => {
+                    total += CONFIG.microservicePrices[checkbox.name] || 0;
+                });
+                return total;
+            }
+
+            // Frequency Discount Calculation
+            function applyFrequencyDiscount(basePrice) {
+                const visits = parseInt($('#frequencyCount').value) || 1; // Default to one visit if empty or invalid.
+                const period = $('#frequencyPeriod').value; // 'week' or 'month'
+
+                // Calculate billing amount
+                let billing = basePrice * visits;
+                
+                // Update total display
+                $('#total').textContent = `${(billing ? billing + CONFIG.extraDiscount[2] : billing).toFixed(2)}`;
+                $('#summaryFrequency').textContent = visits.toString(); // Ensure it's a string
+
+                // Calculate discount
+                const discountRate = discountHelper(visits, period);
+                const discount = billing * discountRate;
+                
+                // Update discount display
+                $('#discount').textContent = `${(billing ? discount + CONFIG.extraDiscount[2] : discount).toFixed(2)}`;
+
+                // Return the final amount after applying the discount
+                return billing * (1 - discountRate);
+            }
+
+            function discountHelper(visits, period) {
+
+                let rate = 0;
+                // Weekly Discounts
+                if (period === 'week') {
+                    if (visits == 2 || visits == 3) {
+                        rate = 0.03; // 3% discount
+                    } else if (visits == 4) {
+                        rate = 0.05; // 5% discount
+                    } else if (visits >= 5) {
+                        rate = 0.1; // 10% discount
+                    }
+                }
+                // Monthly Discounts
+                else if (period === 'month') {
+                    if (visits >= 3 && visits <= 4) {
+                        rate = 0.03; // 3% discount
+                    } else if (visits >= 5 && visits <= 10) {
+                        rate = 0.05; // 5% discount
+                    } else if (visits >= 11) {
+                        rate = 0.10; // 10% discount
+                    }
+                }
+
+                return rate;
+            }
+            
+            // Total Price Calculation
+            function calculateTotalPrice() {
+                const basePrice = calculateBasePrice();
+                let additionalCosts = calculateAdditionalCosts();
+                const microservicesCost = calculateMicroservicesCost() || 0;
+                
+                let totalPrice = applyScaleTax(basePrice + additionalCosts + microservicesCost);
+
+                totalPrice = applyFrequencyDiscount(totalPrice);
+                
+                return totalPrice || 0; // Ensure totalPrice is never NaN
+            }
+
+            function validateCountersAndCalculate() {
+                const rooms = parseInt($('#rooms').value) || 0; // Get rooms value, default to 0 if empty
+                const bathrooms = parseInt($('#bathrooms').value) || 0; // Get bathrooms value, default to 0 if empty
+            
+                // If rooms or bathrooms are below 1, set them to 1 and tick the kitchen box
+                if (rooms < 1 || bathrooms < 1) {
+                    $('#rooms').value = '1';
+                    $('#bathrooms').value = '1';
+                    $('#summaryRooms').textContent = '1'; 
+                    $('#summaryBathrooms').textContent = '1';
+                }
+                
+                $('#kitchen').checked = true; // Tick the kitchen box
+                $('#corridor').checked = true;
+
+                // Get the selected cleaning type
+                const cleaningType = $('input[name="cleaningType"]:checked').value;
+            
+                // Calculate total price
+                const basePrice = CONFIG.baseRates[cleaningType] || 0; // Base price for the selected cleaning type
+                const roomCharge = CONFIG.additionalRoomCosts[cleaningType] || 0; // Charge per additional room
+                const bathroomCharge = CONFIG.bathroomCosts[cleaningType] || 0; // Charge per additional bathroom
+            
+                // Calculate total price
+                const totalRooms = parseInt($('#rooms').value) || 1; // Total rooms, default to 1 if empty
+                const totalBathrooms = parseInt($('#bathrooms').value) || 1; // Total bathrooms, default to 1 if empty
+                
+                //Calculating price from balcony, garage or bassement.
+                const extraSpaceCosts = calculateAdditionalCosts();
+
+                let totalBill = basePrice +
+                    ((totalRooms - 1) * roomCharge) + // Subtract 1 because the first room is included in the base price
+                    ((totalBathrooms - 1) * bathroomCharge) + // Subtract 1 because the first bathroom is included in the base price
+                    extraSpaceCosts;
+            
+                $('#total').textContent = `${(totalBill ? totalBill + CONFIG.extraDiscount[2] : totalBill).toFixed(2)}`;
+
+                totalBill = applyScaleTax(totalBill);
+
+                $('#total').textContent = `${(totalBill+14.50).toFixed(2)}`;
+                
+                return totalBill || 0; // Ensure totalPrice is never NaN
+            }
+
+            function applyScaleTax(amount){
+                // Apply 24% tax for Legal Entity
+                const isLegalEntity = $('input[name="userType"]:checked').value === 'legalEntity';
+                if (isLegalEntity) {
+                    amount *= 1.24; // Add 24% tax
+                }
+
+                // Apply 24% multiplier for Private House
+                if ($('#privateHouse').checked) {
+                    amount *= 1.24; // Add 24% multiplier
+                }
+
+                return amount;
+            }
+
+            // Update Summary Section
+            function updateSummary() {
+                $('#summaryRooms').textContent = $('#rooms').value || 1; // Default to 1 if empty
+                $('#summaryBathrooms').textContent = $('#bathrooms').value || 1; // Default to 1 if empty
+                $('#summaryKitchen').textContent = $('#kitchen').checked ? 'Yes' : 'No';
+                $('#summaryCorridor').textContent = $('#corridor').checked ? 'Yes' : 'No';
+                $('#summaryBalcony').textContent = $('#balcony').checked ? 'Yes' : 'No';
+                $('#summaryGarage').textContent = $('#garage').checked ? 'Yes' : 'No';
+                $('#summaryBasement').textContent = $('#basement').checked ? 'Yes' : 'No';
+                $('#summaryPrivateHouse').textContent = $('#privateHouse').checked ? 'Yes' : 'No';
+
+                const totalPrice = calculateTotalPrice();
+                $('#to-pay').textContent = `${totalPrice.toFixed(2)}`;
+                $('#pay-amount').textContent = `${totalPrice.toFixed(2)}`;
+                
+                toggleOrderButton();
+                handlePaymentMethodSelection(); // Check payment method selection status.
+            }
+
+            // Update Bill On Summary Section
+            function updateList(amount) {
+                $('#summaryKitchen').textContent = $('#kitchen').checked ? 'Yes' : 'No';
+
+                const bill = amount;
+                $('#to-pay').textContent = `${bill.toFixed(2)}`;
+                $('#pay-amount').textContent = `${bill.toFixed(2)}`;
+                
+                toggleOrderButton();
+                handlePaymentMethodSelection(); // Check payment method selection status.
+            }
+
+            // Toggle Code Inputs based on "Meet at Entrance"
+            function toggleCodeInputs() {
+                const meetAtEntranceChecked = $('#meetAtEntrance').checked;
+                const codesSection = $('#codes-section');
+                codesSection.style.display = meetAtEntranceChecked ? 'none' : 'flex';
+            }
+            
+            // Handle Payment Method Selection Logic
+            function handlePaymentMethodSelection() {
+                const paymentMethods = $$('.payment-method input[type="radio"]');
+                const messageElement = $('#dynamic-message-2');
+
+                paymentMethods.forEach(method => {
+                    method.addEventListener('change', () => {
+                        // Check if the selected method is 'card' or 'blik'
+                        if (method.value === 'card' || method.value === 'blik') {
+                            messageElement.style.opacity = '1';
+
+                            // Clear previous messages
+                            messageElement.textContent = "Technical maintenance in process, choose other payment option.";
+                            
+                            // Show alert only if it hasn't been shown for this selection
+                            if (!method.dataset.alertShown) {
+                                alert("Maintenance in process, choose other payment option.");
+                                method.dataset.alertShown = true; // Set flag to prevent multiple alerts
+                            }
+                        } else {
+                            // Reset the alert flag if another payment option is selected
+                            method.dataset.alertShown = false;
+                            messageElement.style.opacity = '0';
+                        }
+                    });
+                });
+            }
+
+        // Toggle Order Button based on Consent and Form Validity
+        function toggleOrderButton() {
+            const isTermsChecked = $('input[name="terms"]').checked;
+            const isConsentChecked = $('input[name="marketingConsent"]').checked;
+            const isFormValid =
+                isTermsChecked &&
+                isConsentChecked &&
+                $('input[name="name"]').value &&
+                $('input[name="telephone"]').value &&
+                $('input[name="street"]').value &&
+                $('input[name="buildingNumber"]').value &&
+                $('input[name="apartmentNumber"]').value 
+
+            $('#makeOrder').disabled = !isFormValid;
+        }
+
+            // Function to handle cleaning type selection
+            function handleCleaningTypeSelection() {
+                const cleaningType = $('input[name="cleaningType"]:checked').value;
+                const microservicesSection = $('#microservices-section');
+                const messageElement = $('#dynamic-message-1');
+
+                if (cleaningType === 'regular' || cleaningType === 'deep') {
+                    microservicesSection.classList.add('greyed-out'); // Add greyed-out class
+                    messageElement.textContent = "applicable under custom or post-renovation cleaning option."; // Set message
+                } else {
+                    microservicesSection.classList.remove('greyed-out'); // Remove greyed-out class
+                    messageElement.textContent = ""; // Clear message
+                }
+            }
+
+            // Validate Form Function
+            function validateForm() {
+                let isValid = true;
+
+                // Helper function to display error messages
+                function showError(input, message) {
+                    const errorElement = document.createElement('div');
+                    errorElement.className = 'error-message';
+                    errorElement.style.color = 'red';
+                    errorElement.textContent = message;
+                    input.parentElement.appendChild(errorElement);
+                    isValid = false;
+                }
+
+                // Helper function to clear existing error messages
+                function clearErrors() {
+                    const errorMessages = document.querySelectorAll('.error-message');
+                    errorMessages.forEach(error => error.remove());
+                }
+
+                // Clear existing errors before validation
+                clearErrors();
+
+                // Validate Name
+                const nameInput = $('input[name="name"]');
+                if (!nameInput.value.trim()) {
+                    showError(nameInput, 'Name is required.');
+                }
+
+                // Validate Telephone
+                const telephoneInput = $('input[name="telephone"]');
+                if (!telephoneInput.value.trim()) {
+                    showError(telephoneInput, 'Telephone is required.');
+                } else if (!/^\d{9,}$/.test(telephoneInput.value.trim())) { // Basic phone number validation
+                    showError(telephoneInput, 'Invalid telephone number.');
+                }
+
+                // Validate Email
+                const emailInput = $('input[name="email"]');
+                if (!emailInput.value.trim()) {
+                    showError(emailInput, 'Email is required.');
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) { // Basic email validation
+                    showError(emailInput, 'Invalid email address.');
+                }
+
+                // Validate Street
+                const streetInput = $('input[name="street"]');
+                if (!streetInput.value.trim()) {
+                    showError(streetInput, 'Street is required.');
+                }
+
+                // Validate Building Number
+                const buildingNumberInput = $('input[name="buildingNumber"]');
+                if (!buildingNumberInput.value.trim()) {
+                    showError(buildingNumberInput, 'Building number is required.');
+                }
+
+                // Validate Apartment Number
+                const apartmentNumberInput = $('input[name="apartmentNumber"]');
+                if (!apartmentNumberInput.value.trim()) {
+                    showError(apartmentNumberInput, 'Apartment number is required.');
+                }
+
+                // Validate Postal Code
+                const postalCodeInput = $('input[name="postalCode"]');
+                if (!postalCodeInput.value.trim()) {
+                    showError(postalCodeInput, 'Postal code is required.');
+                } else if (!/^\d{2}-\d{3}$/.test(postalCodeInput.value.trim())) { // Basic postal code validation (Polish format)
+                    showError(postalCodeInput, 'Invalid postal code (expected format: XX-XXX).');
+                }
+
+                // Validate Cleaning Date
+                const cleaningDateInput = $('#cleaningDate');
+                if (!cleaningDateInput.value.trim()) {
+                    showError(cleaningDateInput, 'Cleaning date is required.');
+                }
+
+                // Validate Cleaning Time
+                const cleaningTimeInput = $('#cleaningTime');
+                if (!cleaningTimeInput.value.trim()) {
+                    showError(cleaningTimeInput, 'Cleaning time is required.');
+                }
+
+                // Validate Terms and Conditions
+                const termsCheckbox = $('input[name="terms"]');
+                if (!termsCheckbox.checked) {
+                    showError(termsCheckbox, 'You must agree to the terms and conditions.');
+                }
+
+                const messageElement = $('#threshold-message');
+
+                const userMessage = `**Amount is below minimum threshold - PLN ${CONFIG.baseRates.regular} required to place an order!**`;
+                if (calculateTotalPrice() < CONFIG.baseRates.regular) {
+                    messageElement.innerHTML = userMessage;
+                    messageElement.style.opacity = '1';
+
+                    setTimeout(() => {
+                        messageElement.style.opacity = '0'; // Start fading out
+                    }, 8000); // 8 seconds delay
+                }
+
+                // Return true if the form is valid, otherwise false
+                return isValid;
+            }
+
+            // Function to handle checkbox changes
+            function handleCheckboxChange(event) {
+                const cleaningType = $("input[name='cleaningType']:checked").value; // Get the selected cleaning type
+                const isRegularOrDeep = (cleaningType === 'regular' || cleaningType === 'deep');
+
+                // Check if the checkbox being changed is for Kitchen or Corridors
+                if (isRegularOrDeep && (event.target.id === 'kitchen' || event.target.id === 'corridor')) {
+                    // Prevent the checkbox from being unchecked
+                    if (!event.target.checked) {
+                        event.preventDefault(); // Prevent default action
+                        event.target.checked = true; // Re-check the checkbox
+                        alert("Kitchen and corridor are part of this package, for specific type of cleaning go under Custom cleaning.");
+                    }
+                }
+            }
+
+            function getAddressData() {
+                let street = $("input[name='street']").value.trim(); 
+                let building = $("input[name='buildingNumber']").value.trim();
+                let apartment = $("input[name='apartmentNumber']").value.trim();
+                let postal = $("input[name='postalCode']").value.trim();
+                const meetAtEntrance = $('#meetAtEntrance').checked;
+
+                let fullAddress = `${street}, ${building}, ${apartment}, ${postal}`;
+
+                if(!meetAtEntrance) {
+                    let gatecode = $("input[name='gateCode']").value.trim();
+                    let entrancecode = $("input[name='entranceCode']").value.trim();
+                    let apartmentcode = $("input[name='apartmentCode']").value.trim();
+                    fullAddress += ` - G: ${gatecode} | E: ${entrancecode} | A: ${apartmentcode}`;
+
+                } else {
+                    fullAddress += ` - Meet at entrance`;
+                }
+
+                return fullAddress;
+            }
+
+            function getExtraRoomsData() {
+                let extraRoomsData = [];
+                let extraRooms = $$("#extra-rooms input[type='checkbox']:checked");
+
+                extraRooms.forEach(room => {
+                    let roomName = room.name; // Get the name of the room
+                    let sizeInput = $("#" + roomName + "Size"); // Find the associated size input
+
+                    if (sizeInput && sizeInput.value) {
+                        extraRoomsData.push(`${roomName} ${sizeInput.value}`);
+                    }
+                    if (roomName == "corridor") {
+                        extraRoomsData.push(`${roomName}s`);
+                    }
+                });
+
+                return extraRoomsData;
+            }
+
+            function getMicroservicesData() {
+                let microservicesData = [];
+                let microservices = $$("#microservices input[type='checkbox']:checked");
+
+                microservices.forEach(service => {
+                    let serviceName = service.name; // Get the name of the room
+                    microservicesData.push(`${serviceName}`);
+                });
+
+                return microservicesData;
+            }
+
+            function getAdditonalsData() {
+                let additionalsNameData = [];
+                let additionals = $$("#additionals input[type='checkbox']:checked");
+
+                additionals.forEach(additional => {
+                    let additionalsName = additional.name; // Get the name of the room
+                    additionalsNameData.push(`${additionalsName}`);
+                });
+
+                return additionalsNameData;
+            }
+
+            function getFrequency() {
+                let count = $("#frequencyCount").value;
+                let period = $("#frequencyPeriod").value;
+                return `${count} / ${period}`;
+            }
+            
+            function getDateTime() {
+                let date = $("#cleaningDate").value;
+                let time = $("#cleaningTime").value;
+                return `${date} : ${time.replace(":", "")} hrs`;
+            }
+
+            // Get references to the form and overlay elements
+            const form = $('#cleaning-order-form');
+            const loadingOverlay = $('#loading-overlay');
+
+            // Function to show loading overlay
+            function showLoading() {
+                loadingOverlay.style.display = 'flex';
+                form.classList.add('loading'); // Add loading class to blackout the form
+            }
+
+            // Function to hide loading overlay
+            function hideLoading() {
+                loadingOverlay.style.display = 'none';
+                form.classList.remove('loading'); // Remove loading class to restore the form
+            }
+
+            // Event Listeners Setup Function
+            function setupEventListeners() {
+                // Counter Buttons for Rooms and Bathrooms
+            $$('.apartment .minus, .apartment .plus').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const elementId = e.target.closest('.apartment').querySelector('input[type="number"]').id;
+                        const delta = button.classList.contains('minus') ? -1 : 1;
+                        adjustCounter(elementId, delta);
+                    });
+                });
+
+                // Attach event listeners to Kitchen and Corridors checkboxes
+                $('#kitchen').addEventListener('change', handleCheckboxChange);
+                $('#corridor').addEventListener('change', handleCheckboxChange);
+
+                // Checkboxes and Radios
+                $$('input[type="checkbox"], input[type="radio"]').forEach(input => {
+                    input.addEventListener('change', updateSummary);
+                    input.addEventListener('change', toggleOrderButton); // Update button state on change
+                });
+
+                // Cleaning Type Change Event Listener
+                $$('input[name="cleaningType"]').forEach(input => {
+                    input.addEventListener('change', () => {
+                        // Event Listener for Cleaning Type Change
+                        const selectedCleaningType = $('input[name="cleaningType"]:checked').value;
+
+                        // Check if the selected cleaning type is Custom or Post-Renovation
+                        if (selectedCleaningType === 'custom' || selectedCleaningType === 'postRenovation') {
+                            resetFormForCustomOrPost(); // Reset form for custom/post-renovation
+                            updateSummary(); // Update summary after reset
+                        }
+                        else {
+                            let value = validateCountersAndCalculate();
+                            updateList(value);
+                        }
+                        
+                        handleCleaningTypeSelection();
+                    });
+                });
+
+                // User Type Change Event Listener (Individual/Legal Entity)
+                $$('input[name="userType"]').forEach(input => {
+                    input.addEventListener('change', updateSummary); // Update summary when user type changes
+                });
+
+                // Private House Toggle Event Listener
+                $('#privateHouse').addEventListener('change', updateSummary);
+
+                // Frequency Dropdown Event Listener
+                $('#frequencyCount').addEventListener('change', updateSummary);
+                $('#frequencyPeriod').addEventListener('change', updateSummary);
+
+                // Form Submission Handling
+                $('#cleaning-order-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (validateForm()) {
+
+                        showLoading();
+                        
+                        let microservicesData = getMicroservicesData();
+                        let additionalsData = getAdditonalsData();
+                        let selectedExtraRooms = getExtraRoomsData();
+                        let frequency = getFrequency();
+                        let dateTime = getDateTime();
+                        let addressData = getAddressData();
+                        let totalBilling = calculateTotalPrice();
+                        
+                        var formData = {
+                            address: addressData,
+                            entity: $('input[name="userType"]:checked').value, 
+                            name: $('input[name="name"]').value,
+                            telephone: $('input[name="telephone"]').value,
+                            email: $('input[name="email"]').value,
+                            cleaningType: $('input[name="cleaningType"]:checked').value,
+                            rooms: $('#rooms').value,
+                            bathrooms: $('#bathrooms').value,
+                            kitchen: $('#kitchen').checked ? "Yes" : "No",
+                            extrarooms: selectedExtraRooms.join(", "), 
+                            microservices: microservicesData.join(", "),
+                            additionalservices: additionalsData.join(", "),
+                            frequency: frequency,
+                            date: dateTime,
+                            paymentOption: $('input[name="paymentMethod"]:checked').value,
+                            totalPrice: totalBilling.toFixed(2),
+                            additionalInfo : $('textarea[name="additionalInfo"]').value,
+                        };
+
+                        fetch("https://script.google.com/macros/s/AKfycbzEywAgpmst9Rnb1W8rWhx2NwcTVWv4udVKhZJ0sBXSnl4XP7L4mUxaWaULmvzWccUx/exec", {
+                            method: "POST",
+                            mode: "no-cors",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(formData)
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            setTimeout(() => {
+                                hideLoading();
+                                console.log("Success:", data);
+                                alert("Your order has been placed successfully!");
+                                form.reset(); 
+                                updateSummary();
+
+                                window.location.href = "https://sites.google.com/view/swiftscrubco/services/packagebuilder/summary";
+                            }, 1500); 
+                        })
+                        .catch(error => {
+                            setTimeout(() => {
+                                hideLoading();
+                                console.error("Error:", error);
+                                alert("Something went wrong. Please try again.");
+                            }, 1500); 
+                        });
+                    }
+                });
+                
+                // Meet at Entrance Toggle Event Listener
+                $('#meetAtEntrance').addEventListener('change', toggleCodeInputs);
+            }
+
+            // Enable size input when checkbox is checked
+            function enableSizeInput(checkboxId, sizeInputId) {
+                const checkbox = $(`#${checkboxId}`);
+                const sizeInput = $(`#${sizeInputId}`);
+
+                checkbox.addEventListener('change', () => {
+                    sizeInput.disabled = !checkbox.checked;
+                    if (!checkbox.checked) {
+                        sizeInput.value = ''; // Clear size input when unchecked
+                    }
+                    updateSummary(); // Update the summary when the checkbox state changes
+                });
+            }
+
+            function moveAsideOnResize() {
+                const aside = $('aside');
+                const smallSum = $('#small-sum');
+                let summaryCard = $('#summary-card');
+
+                if (window.innerWidth < 900) {
+                    // If aside is not already in #small-sum, move it
+                    if (!smallSum.contains(summaryCard)) {
+                        aside.style.display = 'none';
+                        smallSum.appendChild(summaryCard);
+                    }
+                } else {
+                    // If aside is not in its original location, move it back
+                    aside.style.display = 'block';
+
+                    if (!aside.contains(summaryCard)) {
+                        smallSum.removeChild(summaryCard);
+                        aside.appendChild(summaryCard);
+                    }
+                }
+            }
+
+            // Call the function on initial load
+            moveAsideOnResize();
+            
+            // Call this function for Balcony, Garage, and Basement
+            enableSizeInput('balcony', 'balconySize');
+            enableSizeInput('garage', 'garageSize');
+            enableSizeInput('basement', 'basementSize');
+
+            // Initialize Event Listeners and Summary Update on Load
+            setupEventListeners();
+            handleCleaningTypeSelection();
+            updateSummary(); // Ensure summary is updated on load to prevent NaN display.
+
+        });
+
+        function moveAsideOnResize() {
+            const aside = document.querySelector('aside');
+            const smallSum = document.getElementById('small-sum');
+            let summaryCard = document.getElementById('summary-card');
+
+            if (window.innerWidth < 900) {
+                // If aside is not already in #small-sum, move it
+                if (!smallSum.contains(summaryCard)) {
+                    aside.style.display = 'none';
+                    smallSum.appendChild(summaryCard);
+                }
+            } else {
+                // If aside is not in its original location, move it back
+                aside.style.display = 'block';
+
+                if (!aside.contains(summaryCard)) {
+                    smallSum.removeChild(summaryCard);
+                    aside.appendChild(summaryCard);
+                }
+            }
+        }
+
+        // Call the function on window resize
+        window.addEventListener('resize', moveAsideOnResize);
+
+    </script>
+</body>
+</html>
