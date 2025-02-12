@@ -207,8 +207,9 @@
           font-family: 'Gill Sans';
           color:var(--secondary-color);
         }
-        #frequencyCount, #frequencyPeriod {
+        #frequencyCount, #frequencyPeriod, #cleaningDate, #cleaningTime {
           align-items: center;
+          height: 30px;
         }
 
         /* House Details */
@@ -246,26 +247,33 @@
           flex-direction: column;
           text-align: left;
         }
-        #codes-section input, #telephone {
+        #codes-section input {
           width: 120px;
           height: 30px;
         }
         #personal {
-          padding: 0px 10px;
           justify-content: space-between; 
-          padding: 0px 5px;
+          margin: 0px 5px;
         }
         #personal input {
-          width: 55px;
-          height: 30px;
+            height: 30px;
         }
-        #personal input[name="email"] {
-          width: 200px;
+        #personal input[name="email"], #personal input[name="name"]{
+          width: 270px;
+          height: 30px;
         } 
+        #phone {
+            flex-direction: column;
+            text-align: center;
+            margin: 0px;
+        }
+        #phone div {
+            margin: 0px;
+        }
         .textarea-container {
           text-align: left; 
-          padding: 0px 5px; 
           display: block;
+          margin-left: 0px;
         }
         .textarea-container label {
             margin-bottom: 5px; 
@@ -422,40 +430,6 @@
                 width: 100%;
             }
             
-            #summary-card {
-                margin: 0;
-                border: none !important;
-            }
-            /* Style for summary item content */
-            .summary-item, .calculation-item {
-                flex-direction: row;
-                margin: 0px;
-                font-size: medium;
-            }
-            .summary-item span:first-child,
-            .calculation-item span:first-child {
-                text-align: left; 
-                width: 58%;       
-                display: inline-block; 
-            }
-
-            .summary-item span:last-child,
-            .calculation-item span:last-child {
-                text-align: right; 
-                width: 42%;        
-                display: inline-block; 
-            }
-            #orders, #calculations {
-                margin: 0px;
-            }
-            hr {
-                color: var(--background-color); /* Replace "red" with your desired color */
-                background-color: var(--background-color); /* For older browsers */
-                width: 100%;
-                height: 2px;          /* Adjust height for visibility */
-                border: 0;            /* Remove default border */
-                margin-bottom: 20px;
-            }
             /* Form Container */
             #cleaning-order-form, aside {
                 margin: 20px auto;
@@ -501,6 +475,7 @@
             }
             #street input {
                 min-width: 280px;
+                text-align: left;
             }
             input[name="city"] {
                 min-width: 84px;
@@ -512,17 +487,59 @@
                 display: block;
                 min-width: 180px;
             }
-            #codes-section input, #telephone {
-                min-width: 154px;
+            #phone {
+                margin: 15px 0px;
+            }
+            #phone div {
+                flex-direction: row;
+                justify-content: left;
+            }
+            #phone label {
+                text-align: left;
+                margin: 0px;
+            }
+            #telephone {
+                width: 200px;
             }
             #details, #personal {
                 padding: 0;
             }
-            #personal input[name="name"] {
-                min-width: 200px;
-            }
             #placingOrder div {
                 align-items: center;
+            }
+            /* Style for summary item content */
+            #summary-card {
+                margin: 0;
+                border: none !important;
+            }
+            .summary-item, .calculation-item {
+                flex-direction: row;
+                margin: 0px;
+                font-size: medium;
+            }
+            .summary-item span:first-child,
+            .calculation-item span:first-child {
+                text-align: left; 
+                width: 58%;       
+                display: inline-block; 
+            }
+
+            .summary-item span:last-child,
+            .calculation-item span:last-child {
+                text-align: right; 
+                width: 42%;        
+                display: inline-block; 
+            }
+            #orders, #calculations {
+                margin: 0px;
+            }
+            hr {
+                color: var(--background-color); /* Replace "red" with your desired color */
+                background-color: var(--background-color); /* For older browsers */
+                width: 100%;
+                height: 2px;          /* Adjust height for visibility */
+                border: 0;            /* Remove default border */
+                margin-bottom: 20px;
             }
             #consent label {
                 margin-bottom: 15px;
@@ -531,6 +548,40 @@
         @media (min-width: 780px) {
             #small-sum {
                 display: none;
+            }
+        }
+        @media (max-width: 1180px) {
+            #personal {
+                display: block;
+                text-align: left;
+                flex-direction: column; 
+            }
+            #phone {
+                margin: 15px 0px;
+            }
+            #phone div {
+                flex-direction: row;
+                justify-content: left;
+            }
+            #phone label {
+                text-align: left;
+                margin: 0px;
+            }
+            #telephone {
+                width: 200px;
+            }
+        }
+        @media (min-width: 1840px) {
+            body {
+                max-width: 1440px;
+                margin: 0 auto; /* Centers the body horizontally */
+            }
+            aside {
+                width: 270px;
+                right: calc((100vw - 1440px) / 2 - 10px);
+            }
+            #summary card {
+                width: 255px
             }
         }
     </style>
@@ -727,11 +778,11 @@
                         <input type="text" name="street" placeholder="First Street" required>
                     </label>
                     <label>
-                        Building Number <br>
+                        Building # <br>
                         <input type="text" name="buildingNumber" placeholder="01" required>
                     </label>
                     <label>
-                        Apartment Number <br>
+                        Apartment # <br>
                         <input type="text" name="apartmentNumber" placeholder="01" required>
                     </label>
                     <label>
@@ -768,9 +819,14 @@
                 <h2>CONTACT DETAILS</h2>
                 <span id="phoneValidationMsg" style="display: none;"></span>
                 <div id="personal">
-                    <label>Name <br><input type="text" name="name" placeholder="John Doe"></label>
-                    <label for="countryCode">Country Code <br><input type="text" id="countryCode" name="countryCode" placeholder="+1" maxlength="4"></label>
-                    <label for="telephone">Phone Number <br><input type="tel" id="telephone" name="telephone" placeholder="Enter phone number"></label>
+                    <label>Full Name<br><input type="text" name="name" placeholder="John Doe"></label>
+                    <div id="phone">
+                        <label for="telephone">Phone Number</label>
+                        <div>
+                            <input type="text" id="countryCode" name="countryCode" placeholder="+1" maxlength="4">
+                            <input type="tel" id="telephone" name="telephone" placeholder="Enter phone number">
+                        </div>
+                    </div>
                     <label>Email <br><input type="email" name="email" placeholder="johndoe@gmail.com"></label>
                 </div>
                 <div class="textarea-container">
