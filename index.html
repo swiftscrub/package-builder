@@ -225,7 +225,7 @@
         .address-inputs label {
           margin-bottom: 10px;
         }
-        .address-inputs input {
+        .address-inputs input, #countryCode {
           width: 55px;
           height: 30px;
         }
@@ -246,7 +246,7 @@
           flex-direction: column;
           text-align: left;
         }
-        #codes-section input {
+        #codes-section input, #telephone {
           width: 120px;
           height: 30px;
         }
@@ -256,7 +256,7 @@
           padding: 0px 5px;
         }
         #personal input {
-          width: 100px;
+          width: 55px;
           height: 30px;
         }
         #personal input[name="email"] {
@@ -333,12 +333,12 @@
           font-weight: bold;
         }
         #discount,#to-pay, #total {
-          color: #000;;
+          color: #000;
         }
 
         /* messages and warnings */
         .dynamic-message {
-          font-family: 'Gill Sans'; /* Regular font */
+          font-family: 'Gill Sans';
           color:red;
           font-size: medium;
           font-weight: 400;
@@ -512,7 +512,7 @@
                 display: block;
                 min-width: 180px;
             }
-            #codes-section input {
+            #codes-section input, #telephone {
                 min-width: 154px;
             }
             #details, #personal {
@@ -606,7 +606,7 @@
                   </div>
                 </div>                
               </div>
-              <span id="size-message"></span>
+              <span class="dynamic-message" id="size-message-1" style="display: none;"></span>
               <div id="extra-rooms">
                 <div>
                     <label>
@@ -620,6 +620,7 @@
                         Corridors
                   </label>
                 </div>
+                <span class="dynamic-message" id="size-message-2" style="display: none;"></span>
                 <div>
                     <label>
                         <input type="checkbox" id="balcony" name="balcony">
@@ -757,7 +758,7 @@
                     </label>
                     <label>
                         Apartment Code <br>
-                        <input type="text" name="apartmentCode" placeholder="0202">
+                        <input type="text" name="apartmentCode" placeholder="Bell 0202">
                     </label>
                 </div>
             </section>
@@ -765,10 +766,12 @@
             <!-- Contact -->
             <section class="details">
                 <h2>CONTACT DETAILS</h2>
+                <span id="phoneValidationMsg" style="display: none;"></span>
                 <div id="personal">
-                    <label>Name <br><input type="text" name="name" required></label>
-                    <label>Telephone <br><input type="tel" name="telephone" pattern="^\d{9,}$" required></label>
-                    <label>Email <br><input type="email" name="email" required></label>
+                    <label>Name <br><input type="text" name="name" placeholder="John Doe"></label>
+                    <label for="countryCode">Country Code <br><input type="text" id="countryCode" name="countryCode" placeholder="+1" maxlength="4"></label>
+                    <label for="telephone">Phone Number <br><input type="tel" id="telephone" name="telephone" placeholder="Enter phone number"></label>
+                    <label>Email <br><input type="email" name="email" placeholder="johndoe@gmail.com"></label>
                 </div>
                 <div class="textarea-container">
                     <label id="add-text">Additional Information <br></label>
@@ -1039,25 +1042,39 @@
             }
 
             function promptForSize(feature) {
-                const sizeInput = $(`#${feature}Size`);
                 let validSize = false;
+                const sizeInput = $(`#${feature.charAt(0).toLowerCase()}Size`);
             
-                while (!validSize) {
-                    const inputSize = prompt(`Please enter the size (m²) for ${feature.charAt(0).toUpperCase() + feature.slice(1)}:`);
-            
-                    if (inputSize === null) {
-                        // User canceled, uncheck the checkbox
-                        $(`#${feature}`).checked = false;
-                        sizeInput.value = ''; // Clear size input
-                        return; // Exit function
+                while (!sizeInput) {
+                    const size_msg1 = $('#size-message-1');
+                    const size_msg2 = $('#size-message-2');
+                    const msg = `Please enter the size (m²) for ${feature.charAt(0).toUpperCase() + feature.slice(1)} first!`;
+
+                    if (window.innerWidth < 900) {
+                        size_msg2.textContent = msg;
+                        size_msg2.style.display = 'block';
+                        setTimeout(() => {
+                            size_msg2.style.opacity = '0'; 
+                            setTimeout(() => {
+                                size_msg2.style.display = 'none'; 
+                                size_msg2.style.opacity = '1'; 
+                            }, 1000); 
+                        }, 8000);
+                    } else {
+                        size_msg1.textContent = msg;
+                        size_msg1.style.display = 'block';
+                        setTimeout(() => {
+                            size_msg1.style.opacity = '0'; 
+                            setTimeout(() => {
+                                size_msg1.style.display = 'none'; 
+                                size_msg1.style.opacity = '1'; 
+                            }, 1000); 
+                        }, 8000);
                     }
             
-                    const sizeValue = parseInt(inputSize);
-                    if (!isNaN(sizeValue) && sizeValue >= 0) {
-                        sizeInput.value = sizeValue; // Set valid size
-                        validSize = true; // Exit loop after setting valid size
-                    } else {
-                        alert("Please enter a valid number for size.");
+                    if (sizeInput === null) {
+                        $(`#${feature}`).checked = false;
+                        return; 
                     }
                 }
             }    
@@ -1346,11 +1363,11 @@
                 const messageElement = $('#dynamic-message-1');
 
                 if (cleaningType === 'regular' || cleaningType === 'deep') {
-                    microservicesSection.classList.add('greyed-out'); // Add greyed-out class
-                    messageElement.textContent = "applicable under custom or post-renovation cleaning option."; // Set message
+                    microservicesSection.classList.add('greyed-out'); 
+                    messageElement.textContent = "applicable under custom or post-renovation cleaning option.";
                 } else {
-                    microservicesSection.classList.remove('greyed-out'); // Remove greyed-out class
-                    messageElement.textContent = ""; // Clear message
+                    microservicesSection.classList.remove('greyed-out'); 
+                    messageElement.textContent = ""; 
                 }
             }
 
@@ -1370,7 +1387,7 @@
 
                 // Helper function to clear existing error messages
                 function clearErrors() {
-                    const errorMessages = document.querySelectorAll('.error-message');
+                    const errorMessages = $$('.error-message');
                     errorMessages.forEach(error => error.remove());
                 }
 
@@ -1387,7 +1404,7 @@
                 const telephoneInput = $('input[name="telephone"]');
                 if (!telephoneInput.value.trim()) {
                     showError(telephoneInput, 'Telephone is required.');
-                } else if (!/^\d{9,}$/.test(telephoneInput.value.trim())) { // Basic phone number validation
+                } else if (!validatePhoneNumber()) { // Basic phone number validation
                     showError(telephoneInput, 'Invalid telephone number.');
                 }
 
@@ -1421,7 +1438,7 @@
                 const postalCodeInput = $('input[name="postalCode"]');
                 if (!postalCodeInput.value.trim()) {
                     showError(postalCodeInput, 'Postal code is required.');
-                } else if (!/^\d{2}-\d{3}$/.test(postalCodeInput.value.trim())) { // Basic postal code validation (Polish format)
+                } else if (!/^\d{2}-\d{3}$/.test(postalCodeInput.value.trim())) { 
                     showError(postalCodeInput, 'Invalid postal code (expected format: XX-XXX).');
                 }
 
@@ -1451,8 +1468,8 @@
                     messageElement.style.opacity = '1';
 
                     setTimeout(() => {
-                        messageElement.style.opacity = '0'; // Start fading out
-                    }, 8000); // 8 seconds delay
+                        messageElement.style.opacity = '0'; 
+                    }, 8000); 
                 }
 
                 // Return true if the form is valid, otherwise false
@@ -1461,7 +1478,7 @@
 
             // Function to handle checkbox changes
             function handleCheckboxChange(event) {
-                const cleaningType = $("input[name='cleaningType']:checked").value; // Get the selected cleaning type
+                const cleaningType = $("input[name='cleaningType']:checked").value; 
                 const isRegularOrDeep = (cleaningType === 'regular' || cleaningType === 'deep');
 
                 // Check if the checkbox being changed is for Kitchen or Corridors
@@ -1469,7 +1486,7 @@
                     // Prevent the checkbox from being unchecked
                     if (!event.target.checked) {
                         event.preventDefault(); // Prevent default action
-                        event.target.checked = true; // Re-check the checkbox
+                        event.target.checked = true; 
                         alert("Kitchen and corridor are part of this package, for specific type of cleaning go under Custom cleaning.");
                     }
                 }
@@ -1521,7 +1538,7 @@
                 let microservices = $$("#microservices input[type='checkbox']:checked");
 
                 microservices.forEach(service => {
-                    let serviceName = service.name; // Get the name of the room
+                    let serviceName = service.name; 
                     microservicesData.push(`${serviceName}`);
                 });
 
@@ -1533,7 +1550,7 @@
                 let additionals = $$("#additionals input[type='checkbox']:checked");
 
                 additionals.forEach(additional => {
-                    let additionalsName = additional.name; // Get the name of the room
+                    let additionalsName = additional.name; 
                     additionalsNameData.push(`${additionalsName}`);
                 });
 
@@ -1552,6 +1569,45 @@
                 return `${date} : ${time.replace(":", "")} hrs`;
             }
 
+            function getPhoneNumber() {
+                const countryCode = $('#countryCode').value.trim();
+                const phone = $('#telephone').value.trim();
+                let completeNumber = `(${countryCode})${phone}`;
+                return completeNumber;
+            }
+
+            function validatePhoneNumber() {
+                const countryCode = $('#countryCode').value.trim();
+                const phone = $('#telephone').value.trim();
+                const validationMessage = $('#phoneValidationMsg');
+
+                // Basic formatting: Allow digits, spaces, +, -, (, )
+                const allowedChars = /^[0-9\s+\-()]*$/;
+                if (!allowedChars.test(phone)) {
+                    validationMessage.textContent = "Invalid characters in phone number.";
+                    return false;
+                }
+
+                // Remove all non-digit characters to check length accurately
+                const cleanedNumber = phone.replace(/\D/g, '');
+
+                // Define minimum and maximum length (adjust as needed)
+                const minLength = 7;
+                const maxLength = 15;
+
+                if (cleanedNumber.length < minLength || cleanedNumber.length > maxLength) {
+                    validationMessage.textContent = `Phone number must be between ${minLength} and ${maxLength} digits.`;
+                    return false;
+                }
+
+                // (Optional) Check for a valid country code (you might want a more comprehensive list)
+                if (countryCode && !/^\+\d+$/.test(countryCode)) {
+                    validationMessage.textContent = "Invalid country code format.  Use + followed by digits.";
+                    return false;
+                }
+                return true;
+            }
+
             // Get references to the form and overlay elements
             const form = $('#cleaning-order-form');
             const loadingOverlay = $('#loading-overlay');
@@ -1559,13 +1615,13 @@
             // Function to show loading overlay
             function showLoading() {
                 loadingOverlay.style.display = 'flex';
-                form.classList.add('loading'); // Add loading class to blackout the form
+                form.classList.add('loading'); 
             }
 
             // Function to hide loading overlay
             function hideLoading() {
                 loadingOverlay.style.display = 'none';
-                form.classList.remove('loading'); // Remove loading class to restore the form
+                form.classList.remove('loading'); 
             }
 
             // Event Listeners Setup Function
@@ -1597,8 +1653,8 @@
 
                         // Check if the selected cleaning type is Custom or Post-Renovation
                         if (selectedCleaningType === 'custom' || selectedCleaningType === 'postRenovation') {
-                            resetFormForCustomOrPost(); // Reset form for custom/post-renovation
-                            updateSummary(); // Update summary after reset
+                            resetFormForCustomOrPost(); 
+                            updateSummary(); 
                         }
                         else {
                             let value = validateCountersAndCalculate();
@@ -1635,12 +1691,13 @@
                         let dateTime = getDateTime();
                         let addressData = getAddressData();
                         let totalBilling = calculateTotalPrice();
+                        let phoneNumber = getPhoneNumber();
                         
                         var formData = {
                             address: addressData,
                             entity: $('input[name="userType"]:checked').value, 
                             name: $('input[name="name"]').value,
-                            telephone: $('input[name="telephone"]').value,
+                            telephone: phoneNumber,
                             email: $('input[name="email"]').value,
                             cleaningType: $('input[name="cleaningType"]:checked').value,
                             rooms: $('#rooms').value,
