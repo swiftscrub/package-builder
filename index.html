@@ -1897,12 +1897,12 @@ The door need a littlebit of 'pulling' tactic to unclock it. e.t.c"></textarea>
 
                 let fullAddress = `${street}, ${building}, ${apartment}, ${postal}`;
 
-                if(accessInfo === 'Can provide access codes') {
+                if(accessInfo === 'codes-provided') {
                     let gatecode = $("input[name='gateCode']").value.trim();
                     let entrancecode = $("input[name='entranceCode']").value.trim();
                     let apartmentcode = $("input[name='apartmentCode']").value.trim();
                     fullAddress += ` - G: ${gatecode} | E: ${entrancecode} | A: ${apartmentcode}`;
-
+                    console.log(fullAddress);
                 }
 
                 return fullAddress;
