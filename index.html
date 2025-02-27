@@ -40,7 +40,7 @@
           border: 1px solid var(--background-color);
           border-radius: 10px;
           background-color: #f9f9f9;
-          position: fixed; top: 105px; right: 10px;
+          position: fixed; top: 130px; right: 10px;
           box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
         }
         aside div {
@@ -87,13 +87,18 @@
 
         /* Top Header */
         #top-header {
-            margin-top: 0px;
+            margin-top: 40px;
         }
         /* Language Switcher */
         #language-switcher {
-            float: right;
+            position: absolute;
+            top: 0;
+            right: 0;
             height: 40px;
             width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* User Type Selection */
@@ -2051,7 +2056,7 @@ The door need a littlebit of 'pulling' tactic to unclock it. e.t.c"></textarea>
 
             function loadLanguage(lang) {
             // Define the path to the language files
-            const langFilePath = `./translations/${lang}.json`;
+            const langFilePath = `https://raw.githubusercontent.com/swiftscrub/package-builder/refs/heads/main/translations/${lang}.json`;
 
             // Fetch the selected language file
             fetch(langFilePath)
