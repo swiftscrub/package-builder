@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftScrub Co. - Cleaning Order Form</title>
+    <style>
+        :root {
+            --primary-color: #00DACB; 
+            --secondary-color: #FF5100;
+            --shade-color: #009F94;
+            --accent-color: #F0F0F0; 
+            --background-color: #ccc; 
+            --text-color: #404040; 
+        }
+        body {
+          font-family: 'Lato', 'Lora', 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-weight: 600;
+          color: var(--text-color);
+        }
+        div {
+          justify-content: center;
+          display: flex;
+          margin: 15px;
+        }
+        #main {
+           margin: 1px; 
+        }
+        form {
+          flex: 4;
+          margin: 0px 300px 0px 10px;
+          max-width: 1800px;
+        }
+        aside {
+          flex: 1;
+          padding: 10px;
+          border: 1px solid var(--background-color);
+          border-radius: 10px;
+          background-color: #f9f9f9;
+          position: fixed; top: 130px; right: 10px;
+          box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+        }
+        aside div {
+          display: block;
+          margin: 0;
+        }
+        section {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border: 1px solid var(--background-color);
+            border-radius: 20px;
+            background-color: #fff;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+          color: var(--primary-color);
+          margin: 15px 0px 25px 0px;
+        }
+        h3, h4 {
+            color: var(--primary-color);
+            margin: 5px 0px;
+        }
+        h5 {
+            color: var(--secondary-color);
+        }
+        input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], select, textarea {
+          border: 1px solid var(--background-color);
+          border-radius: 5px;
+          text-align: center;
+          width: 100%;
+          margin-bottom: 15px;
+        }
+        textarea {
+            width: 95%; 
+            height: 70px; 
+            border: 1px solid var(--background-color);
+            text-align: left;
+            padding: 1% 2.5%;
+        }
+
+        /* Top Header */
+        #top-header {
+            margin-top: 40px;
+        }
+        /* Language Switcher */
+        #language-switcher {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 40px;
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* User Type Selection */
+        .lab label {
+            margin-left: 7.5%;
+            margin-right: 7.5%;
+        }
+        .lab2 {
+            justify-content: space-between;
+        }
+
+        /* Apartment */
+        .components {
+            margin: 0px;
+            justify-content: space-evenly;
+        }
+        .components div {
+            align-items: center;
+            justify-content: space-between;
+            width: 300px;
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .components input {
+            width: 50px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 5px;
+            margin: 0 10px;
+        }
+        .components button {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            width: 45px;
+            height: fit-content;
+            padding: 5px 10px;
+            font-size: 20px;
+            font-weight: bolder;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .components button:hover {
+            background-color: #1496c7;
+        }
+        .components button:active {
+            background-color: #0d7ba6;
+        }
+        #in-rooms {
+            flex: 1;
+            justify-content: space-between;
+        }
+        #out-rooms {
+            flex: 2;
+            justify-content: space-between;
+        }
+        #balconySize,#garageSize, #basementSize {
+          width: 74px;
+        }
+        .container {
+          display: grid;                  
+          grid-template-columns: repeat(2, 1fr); 
+          gap: 10px;   
+          margin: 15px 0px 0px 0px;                    
+        }
+
+        /* Microservices */
+        #microservices, #additionals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 15px;
+            margin: 0px 0px 15px 0px; 
+        }
+        #microservices label, #additionals label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            justify-content: space-between; 
+            margin: 0; 
+        }
+        #microservices label input, 
+        #additionals label input {
+          margin-right: 10px; 
+        }
+        #microservices label input[type="checkbox"],
+        #additionals label input[type="checkbox"] {
+            margin-right: 10px; /* Space between checkbox and first span */
+        }
+        #microservices label span:first-of-type,
+        #additionals label span:first-of-type {
+            flex: 1; /* Take up remaining space */
+            text-align: left;
+            margin-right: 10px; /* Space between first and second span */
+         }
+        #microservices label span:last-of-type,
+        #additionals label span:last-of-type {
+            margin-left: auto; /* Push second span to the right */
+            color: var(--shade-color);
+        }
+
+        /* Frequency */
+        #motivation {
+          font-family: 'Gill Sans';
+          color:var(--secondary-color);
+        }
+        .box label {
+            margin: 5px;
+        }
+        #cleaningDate, #cleaningTime, #frequencyCount, #frequencyPeriod {
+          align-items: center;
+          height: 30px;
+          margin: 5px 0px;
+        }
+
+        /* House Details */
+        .details {
+          color: #C0C0C0;
+          font-weight: 400;
+          padding-bottom: 15px;
+        }
+        .address-inputs, #codes-section {
+          justify-content: space-between;
+        }
+        .address-inputs label {
+            text-align: left;
+        }
+        .address-inputs input {
+           height: 30px;
+        }
+        .address-inputs input[name="city"], 
+        .address-inputs input[name="postalCode"] {
+            width: 110px;
+        }
+        .address-inputs input[name="street"] {
+            width: 320px;
+        }
+        .address-inputs input[name="buildingNumber"],
+        .address-inputs input[name="apartmentNumber"],
+        .address-inputs input[name="postalCode"] {
+            width: 80px;
+        }
+        .entrance-toggle {
+            text-align: center;
+            margin: 15px 0;
+        }
+        #entrance label {
+            flex: 1;
+        }
+        #entrance select {
+            flex: 3;
+            height: 37px;
+            margin-bottom: 0;
+        }
+        #codes-section label {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            text-align: left;
+        }
+        #codes-section input {
+            width: 120px;
+            height: 30px;
+        }
+        #countryCode {
+            max-width: 55px;
+        }
+        #personal {
+            justify-content: space-between; 
+        }
+        #personal input {
+            height: 30px;
+        }
+        #personal input[name="email"], #personal input[name="name"]{
+          max-width: 270px;
+          height: 30px;
+        } 
+        #phone {
+            flex-direction: column;
+            text-align: center;
+            margin: 0px;
+        }
+        #phone div {
+            margin: 0px;
+        }
+        #phone label, #personal label {
+            text-align: left;
+        }
+        .textarea-container {
+          text-align: left; 
+          display: block;
+        }
+        
+        /* Consent */
+        #consent {
+          text-align: left;
+        }
+        #consent div {
+            justify-content: left;
+        }
+        #consent label {
+            display: inline-flex;
+        }
+
+        /* Submissions */
+        #makeOrder {
+          width: 320px;
+          height: 40px;
+          font-weight: bold;
+          background-color: var(--secondary-color); 
+          color: white;
+          border: none;
+          border-radius: 4px;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          padding: 0px 10px;
+        }
+        #makeOrder:disabled {
+          background-color: var(--background-color); 
+          cursor: not-allowed;
+        }
+        #makeOrder:hover:not(:disabled) {
+          background-color: var(--secondary-color); 
+        }
+
+        /* summary */
+        #summary-card {
+          width: 220px;
+          border: 2px solid grey; 
+          border-radius: 10px; 
+          padding: 15px; 
+          background-color: white;
+          box-shadow: 0 2px 5px rgba(0, 70, 85, 0.1); 
+        }
+        #summary-card h2 {
+          text-align: center;
+        }
+        #summary-card div {
+            margin: 10px 0px;
+        }
+        .summary-item, .calculation-item {
+          display: flex;
+          justify-content: space-between;
+        }
+        #orders {
+          font-weight: 400;
+          font-size: small;
+          color: #333;
+        }
+        #calculations {
+          font-size: small;
+          font-weight: bold;
+        }
+        #discount,#to-pay, #total {
+          color: #000;
+        }
+
+        /* messages and warnings */
+        .dynamic-message {
+          font-family: 'Gill Sans';
+          color:red;
+          font-size: medium;
+          font-weight: 400;
+          transition: opacity 1s ease-in-out; /* Smooth transition for fading */
+          opacity: 1; /* Start fully visible */
+        }
+        #dynamic-message-1 {
+          color: #333;
+          font-size: large;
+          font-weight: bold;
+        }
+        .greyed-out {
+          opacity: 0.5; /* Make it semi-transparent */
+          pointer-events: none; /* Disable interaction */
+          background-color: #e2e2e2;
+        }
+
+        /* Styles for loading overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000; /* Ensure it's on top of everything */
+            margin: 0px;
+        }
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey border */
+            border-top: 8px solid #3498db; /* Blue border top */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        #finish-button {
+            margin: 20px;
+        }
+        #finish-button a {
+            color: white;
+            text-decoration: none;
+        }
+        .custom-btn {
+            width: 130px;
+            height: 40px;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px 25px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+            7px 7px 20px 0px rgba(0,0,0,.1),
+            4px 4px 5px 0px rgba(0,0,0,.1);
+            outline: none;
+        }
+        /* 7 */
+        .btn-7 {
+            background: linear-gradient(0deg, rgba(255,151,0,1) 0%, rgba(251,75,2,1) 100%);
+            line-height: 42px;
+            padding: 0;
+            border: none;
+        }
+        .btn-7 span {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .btn-7:before,
+        .btn-7:after {
+            position: absolute;
+            content: "";
+            right: 0;
+            bottom: 0;
+            background: rgba(251,75,2,1);
+            box-shadow:
+            -7px -7px 20px 0px rgba(255,255,255,.9),
+            -4px -4px 5px 0px rgba(255,255,255,.9),
+            7px 7px 20px 0px rgba(0,0,0,.2),
+            4px 4px 5px 0px rgba(0,0,0,.3);
+            transition: all 0.3s ease;
+        }
+        .btn-7:before{
+            height: 0%;
+            width: 2px;
+        }
+        .btn-7:after {
+            width: 0%;
+            height: 2px;
+        }
+        .btn-7:hover{
+            color: rgba(251,75,2,1);
+            background: transparent;
+        }
+        .btn-7:hover:before {
+            height: 100%;
+        }
+        .btn-7:hover:after {
+            width: 100%;
+        }
+        .btn-7 span:before,
+        .btn-7 span:after {
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 0;
+            background: rgba(251,75,2,1);
+            box-shadow:
+            -7px -7px 20px 0px rgba(255,255,255,.9),
+            -4px -4px 5px 0px rgba(255,255,255,.9),
+            7px 7px 20px 0px rgba(0,0,0,.2),
+            4px 4px 5px 0px rgba(0,0,0,.3);
+            transition: all 0.3s ease;
+        }
+        .btn-7 span:before {
+            width: 2px;
+            height: 0%;
+        }
+        .btn-7 span:after {
+            height: 2px;
+            width: 0%;  
+        }
+        .btn-7 span:hover:before {
+            height: 100%;
+        }
+        .btn-7 span:hover:after {
+            width: 100%;
+        }
+
+        /* Keyframes for the spinning animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Style for the form blackout */
+        #cleaning-order-form.loading {
+            opacity: 0.5; 
+            pointer-events: none; 
+        }
+        @media (max-width: 380px) {
+            /* Microservices */
+            #microservices {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            }
+            #personal input[name="name"],
+            #personal input[name="email"] {
+                width:98%;
+            }
+        }
+        @media (max-width: 450px) {
+            body {
+                font-size: small;
+            }
+            div {
+                margin: 15px 0px;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            input, select {
+                padding: 5px 2px;
+            }
+            textarea {
+                height: 110px;
+            }
+            #language-switcher {
+                float: none;
+                flex-direction: row;
+                justify-content: right;
+                width: 100%;
+            }
+            #langSwitcher {
+                max-width: 80px;
+                margin: 0px 15px 0px 0px;
+            }
+            #dynamic-message-1 {
+                font-size: medium;
+            }
+            .components div {
+                width: 98%;
+                margin: 15px 0px;
+            }
+            .components input {
+                width: 25px;
+                padding: 5px 0px;
+                margin: 0 2px;
+            }
+            #microservices label {
+                padding: 5px 0px;
+            }
+            #additionals {
+                margin: 10px 0px;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+            }
+            .box {
+                margin: 0;
+            }
+            #frequencyCount, #frequencyPeriod {
+                height: 42px;
+            }
+            #street input {
+                width: 92%;
+            }
+            #countryCode {
+                width: 12%;
+            }
+            .calculation-item span:last-child {
+                width: 50% !important;
+            }
+            #makeOrder {
+                width: 100%;
+            }
+        }
+        @media (min-width: 450px) and (max-width: 900px) {
+            #orders, #calculations {
+                font-size: medium;
+            }
+        }
+        /* Responsive Layout - Small Screens */
+        @media (max-width: 900px) {
+            section {
+                padding: 10px;
+            }
+            aside {
+                display: none; 
+                margin-left: 0; 
+                margin-top: 20px; 
+            }
+            div {
+                text-align: left;
+                flex-direction: column; 
+            }
+            .lab label, .lab2 label, #additionals label {
+                margin: 5px 0px;
+            }
+            .row div {
+                margin: 0;
+            }
+
+            /* Counters */
+            .components {
+                align-items: center;
+                flex-direction: column;
+            }
+            .components div {
+                flex-direction: row;
+                text-align: center;
+            }
+            .components button {
+                width: 45px;
+                padding: 8px 0px;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            
+            /* Form Container */
+            #cleaning-order-form, aside {
+                margin: 20px auto;
+                padding: 20px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            #cleaning-order-form {
+                max-width: 800px;
+            }           
+            #extra-rooms {
+                margin-top: 15px;
+            }
+            #extra-rooms label {
+                flex-basis: calc(20% - 5px);
+                display: flex;
+                align-items: center;
+            }
+            #extra-rooms input[type='number']{
+                width: 72px;
+                margin-left: auto;
+            }
+            #in-rooms {
+                margin: 0px 0px 10px 0px;
+            }
+            #in-rooms div {
+                margin-top: 15px;
+            }
+            #out-rooms {
+                flex-direction: column;
+                margin: 0;
+            }
+            #private--house {
+                display: block;
+                text-align: center;
+            }
+            /* Labels */
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            /* Inputs */
+            #street input {
+                max-width: 280px;
+            }
+            input[name="city"] {
+                min-width: 84px;
+            }
+            input[name="postalCode"] {
+                min-width: 100px; 
+            }
+            #codes-section label {
+                min-width: 180px;
+            }
+            #phone {
+                margin: 15px 0px;
+            }
+            #phone div {
+                flex-direction: row;
+                justify-content: left;
+            }
+            #phone label {
+                text-align: left;
+                margin: 0px;
+            }
+            #telephone {
+                max-width: 210px;
+            }
+            #placingOrder div {
+                align-items: center;
+            }
+            /* Style for summary item content */
+            #summary-card {
+                margin: 0px;
+                padding: 0% 2.5%;
+                border: none !important;
+                width: 95%;
+                background-color: var(--accent-color);
+            }
+            .summary-item, .calculation-item {
+                flex-direction: row;
+                padding: 0px 5px;
+            }
+            .summary-item span:first-child,
+            .calculation-item span:first-child {
+                text-align: left; 
+                width: 58%;       
+                display: inline-block; 
+            }
+
+            .summary-item span:last-child,
+            .calculation-item span:last-child {
+                text-align: right; 
+                width: 42%;        
+                display: inline-block; 
+            }
+            #orders, #calculations {
+                margin: 0px;
+            }
+            hr {
+                color: var(--background-color); 
+                background-color: var(--background-color); 
+                width: 100%;
+                height: 2px;          
+                border: 0;           
+                margin-bottom: 20px;
+            }
+        }
+        @media (min-width: 900px) {
+            #small-sum {
+                display: none;
+            }
+        }
+        @media (max-width: 1180px) and (min-width: 900px) {
+            #personal {
+                display: block;
+                text-align: left;
+                flex-direction: column; 
+            }
+            #phone div {
+                flex-direction: row;
+                justify-content: left;
+            }
+            #phone label {
+                text-align: left;
+                margin: 0px;
+            }
+            #telephone {
+                width: 210px;
+            }
+            /* Counters */
+            #windows {
+                align-items: center;
+                flex-direction: column;
+            }
+            #windows div {
+                flex-direction: row;
+                text-align: center;
+            }
+            #extra-rooms {
+                flex-direction: column;
+            }
+
+            #extra-rooms .row {
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+            .address-inputs input[name="city"], 
+            .address-inputs input[name="postalCode"] {
+                width: 70px;
+            }
+            .address-inputs input[name="street"] {
+                width: 250px;
+            }
+        }
+        @media (max-width: 1280px) {
+            form {
+                width: 70%;
+            }
+        }
+        @media (min-width: 1840px) {
+            body {
+                max-width: 1440px;
+                margin: 0 auto; /* Centers the body horizontally */
+            }
+            aside {
+                right: calc((100vw - 1440px) / 2 - 10px);
+            }
+            #summary card {
+                width: 255px
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher-->
+    <div id="language-switcher">
+        <select id="langSwitcher">
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="pl">Polski</option>
+        </select>
+    </div>
+
+    <!-- Header -->
+    <div id="top-header">
+        <h1>SwiftScrub Co Package Builder</h1>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loader"></div>
+        <div>
+            <span id="submission-message"></span>
+        </div>
+        <div>
+            <button id="finish-button" class="custom-btn btn-7" style="display: none;">
+                <span>Zakończ!</span>
+            </button>
+        </div>
+        <div>
+            <button id="cancel-button" class="custom-btn btn-7" style="display: none;">
+                <span>Anuluj!</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Structure -->
+    <div id="main" style="display: flex;">
+        <form id="cleaning-order-form">
+            <!-- User Type Selection -->
+            <section>
+                <h2 id="clientSectionTitle">CLIENT</h2>
+                <div class="lab">
+                    <label>
+                        <input type="radio" name="userType" value="individual" checked>
+                        <span id="individualLabel">Individual</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="legalEntity">
+                        <span id="legalEntityLabel">Legal Entity</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Cleaning Options -->
+            <section>
+                <h2 id="serviceSectionTitle">SERVICE</h2>
+                <p><span class="dynamic-message" id="dynamic-message-0"></span></p>
+                <div class="lab2">
+                    <label>
+                        <input type="radio" name="cleaningType" value="regular" checked>
+                        <span id="regularCleaningLabel">Regular Cleaning</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="cleaningType" value="deep">
+                        <span id="deepCleaningLabel">Deep Cleaning</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="cleaningType" value="custom">
+                        <span id="customCleaningLabel">Custom Cleaning</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="cleaningType" value="postRenovation">
+                        <span id="postRenovationCleaningLabel">Post-Renovation Cleaning</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Apatment Type -->
+            <section>
+                <h2 id="housingSectionTitle">HOUSING</h2>
+                <div class="lab2">
+                    <label>
+                        <input type="radio" name="apartmentType" value="Private House">
+                        <span id="privateHouseLabel">Private House</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="apartmentType" value="Studio Apartment">
+                        <span id="studioApartmentLabel">Studio Apartment</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="apartmentType" value="Private Apartment" checked>
+                        <span id="privateApartmentLabel">Private Apartment</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="apartmentType" value="Commercial Apartment">
+                        <span id="commercialApartmentLabel">Commercial Apartment</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Apartment Details -->
+            <section>
+                <h2 id="categorySectionTitle">CATEGORY</h2>
+                <div class="components" id="apt">
+                    <div id="apt-1">
+                        <button type="button" class="minus">-</button>
+                        <span id="roomsLabel">ROOMS</span>
+                        <input type="number" id="rooms" name="rooms" value="1" readonly>
+                        <button type="button" class="plus">+</button>
+                    </div>
+                    <div id="apt-2">
+                        <button type="button" class="minus">-</button>
+                        <span id="bathroomsLabel">BATHROOMS</span>
+                        <input type="number" id="bathrooms" name="bathrooms" value="1" readonly>
+                        <button type="button" class="plus">+</button>
+                    </div>               
+                </div>
+                <span class="dynamic-message" id="size-message-1" style="display: none;"></span>
+                <div id="extra-rooms">
+                    <div class="row" id="in-rooms">
+                        <div>
+                            <label>
+                                <input type="checkbox" id="kitchen" name="kitchen" checked>
+                                <span id="kitchenLabel">Kitchen</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" id="corridor" name="corridor" checked>
+                                <span id="corridorsLabel">Corridors</span>
+                            </label>
+                        </div>
+                    </div>
+                    <span class="dynamic-message" id="size-message-2" style="display: none;"></span>
+                    <div class="row" id="out-rooms">
+                        <div>
+                            <label>
+                                <input type="checkbox" id="balcony" name="balcony">
+                                <span id="balconyLabel">Balcony</span>
+                                <input type="number" id="balconySize" name="balconySize" data-lang-key="size" placeholder="Size (m²)">
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" id="garage" name="garage">
+                                <span id="garageLabel">Garage</span>
+                                <input type="number" id="garageSize" name="garageSize" data-lang-key="size" placeholder="Size (m²)">
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" id="basement" name="basement">
+                                <span id="basementLabel">Basement</span>
+                                <input type="number" id="basementSize" name="basementSize" data-lang-key="size" placeholder="Size (m²)">
+                            </label>
+                        </div>
+                    </div>
+                </div>                                 
+            </section>
+
+            <!-- Microservices -->
+            <section id="microservices-section">
+                <span id="dynamic-message-1"></span>
+                <h2 id="microservicesSectionTitle">MICROSERVICES</h2>
+                <div class="microservices" id="microservices">
+                    <label><input type="checkbox" name="microwave"><span id="microwaveLabel">Microwave</span> <span>PLN 20</span></label>
+                    <label><input type="checkbox" name="oven"><span id="ovenLabel">Oven</span> <span>PLN 41</span></label>
+                    <label><input type="checkbox" name="washingDishes"><span id="washingDishesLabel">Washing Dishes</span> <span>PLN 25</span></label>
+                    <label><input type="checkbox" name="kitchenCabinets"><span id="kitchenCabinetsLabel">Kitchen Cabinets</span> <span>PLN 52</span></label>
+                    <label><input type="checkbox" name="refrigerator"><span id="refrigeratorLabel">Refrigerator</span> <span>PLN 40</span></label>
+                    <label><input type="checkbox" name="closet"><span id="closetLabel">Closet</span> <span>PLN 25</span></label>
+                    <label><input type="checkbox" name="wardrobe"><span id="wardrobeLabel">Wardrobe</span> <span>PLN 30</span></label>
+                    <label><input type="checkbox" name="bureau"><span id="bureauLabel">Bureau/Drawers</span> <span>PLN 17</span></label>
+                    <label><input type="checkbox" name="windows"><span id="windowsLabel">Windows</span> <span>PLN 35</span></label>
+                    <label><input type="checkbox" name="toiletCabinets"><span id="toiletCabinetsLabel">Toilet Cabinets</span> <span>PLN 20</span></label>
+                    <label><input type="checkbox" name="additionalHours"><span id="additionalHoursLabel">Additional Hours</span> <span>PLN 48</span></label>
+                    <label><input type="checkbox" name="wateringPlants"><span id="wateringPlantsLabel">Watering Plants</span> <span>PLN 12</span></label>
+                </div>
+            </section>
+
+            <!-- Windows -->
+            <section id="windows-section" style="display: none;">
+                <h4 id="windowsTitle">WINDOWS</h4>
+                <h5 id="windowsSubtitle">Enter the dimensions and number of windows</h5>
+                <div class="components" id="windows">
+                    <!-- Small Windows Counter -->
+                    <div>
+                        <button type="button" class="minus">-</button>
+                        <span id="smallWindowsLabel">SMALL</span>
+                        <input type="number" id="small-windows" name="small-windows" value="0" readonly>
+                        <button type="button" class="plus">+</button>
+                    </div>
+
+                    <!-- Medium Windows Counter -->
+                    <div>
+                        <button type="button" class="minus">-</button>
+                        <span id="mediumWindowsLabel">MEDIUM</span>
+                        <input type="number" id="medium-windows" name="medium-windows" value="0" readonly>
+                        <button type="button" class="plus">+</button>
+                    </div>
+
+                    <!-- Balcony Doors Counter -->
+                    <div>
+                        <button type="button" class="minus">-</button>
+                        <span id="balconyDoorsLabel">BALCONY DOORS</span>
+                        <input type="number" id="balcony-doors" name="balcony-doors" value="0" readonly>
+                        <button type="button" class="plus">+</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Order Cleaners -->
+            <section id="team-section" style="display: none;">
+                <h4 id="additionalHoursTitle">ADDITIONAL HOURS</h4>
+                <h5 id="additionalHoursSubtitle">Hire our team based on number and time</h5>
+                <div class="components" id="team">
+                    <!-- Cleaners Counter -->
+                    <div>
+                        <button type="button" class="minus">-</button>
+                        <span id="cleanersLabel">CLEANERS</span>
+                        <input type="number" id="cleaners" name="cleaners" value="0" readonly>
+                        <button type="button" class="plus">+</button>
+                    </div>
+
+                    <!-- Hours Counter -->
+                    <div>
+                        <button type="button" class="minus">-</button>
+                        <span id="hoursLabel">HOURS</span>
+                        <input type="number" id="hours" name="hours" value="0" readonly>
+                        <button type="button" class="plus">+</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Additional Services -->
+            <section class="microservices">
+                <h2 id="additionalSectionTitle">ADDITIONAL</h2>
+                <div id="additionals">
+                    <label><input type="checkbox" name="organicProducts" id="organicProducts"> <span id="organicProductsLabel">Organic Products </span><span>PLN 79</span></label>
+                    <label><input type="checkbox" name="orderVacuum" id="orderVacuum"> <span id="orderVacuumLabel">Order Vacuum </span><span>PLN 38</span></label>
+                    <label><input type="checkbox" name="cleaningKit" id="cleaningKit"> <span id="cleaningKitLabel">Order Cleaning Kit </span><span>PLN 27</span></label>
+                    <label><input type="checkbox" name="ownKit" id="ownKit"> <span id="ownKitLabel">Prefer My Own Kit & Detergents </span><span>PLN 0</span></label>
+                </div>
+            </section>
+
+            <!-- Frequency -->
+            <section>
+                <h2 id="frequencySectionTitle">FREQUENCY</h2>
+                <span id="motivation">Regular cleanings unlock greater discounts!</span>
+                <div class="container">
+                    <div class="box">
+                        <label><span id="numberOfVisitsLabel">Number of Visits:</span>
+                            <select id="frequencyCount">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                            </select>
+                        </label>
+                        <label><span id="perLabel">Per:</span>
+                            <select id="frequencyPeriod">
+                                <option value="week" id="week">Week</option>
+                                <option value="month" id="month">Month</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="box">
+                        <label><span id="dateAndTimeLabel">Date and Time</span>
+                            <input type="date" id="cleaningDate" required>
+                            <input type="time" id="cleaningTime" required>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Address -->
+            <section class="details">
+                <h2 id="addressSectionTitle">ADDRESS</h2>
+                <div class="address-inputs">
+                    <label>
+                        <span id="cityNameLabel">City Name</span> <br>
+                        <input type="text" name="city" data-lang-key="city" placeholder="Warsaw" disabled>
+                    </label>
+                    <label id="street">
+                        <span id="streetNameLabel">Street Name</span> <br>
+                        <input type="text" name="street" data-lang-key="streetsample" placeholder="First Street" required>
+                    </label>
+                    <label>
+                        <span id="buildingNumberLabel">Building #</span> <br>
+                        <input type="text" name="buildingNumber" placeholder="01" required>
+                    </label>
+                    <label>
+                        <span id="apartmentNumberLabel">Apartment #</span> <br>
+                        <input type="text" name="apartmentNumber" placeholder="01" required>
+                    </label>
+                    <label>
+                        <span id="postalCodeLabel">Postal Code</span> <br>
+                        <input type="text" name="postalCode" placeholder="01-001" required>
+                    </label>
+                </div>
+
+                <div id="entrance">
+                    <label for="entry-method">
+                        <span id="entryMethodLabel">How can we enter your home?</span>
+                    </label>
+                    <select id="entry-method" name="entry-method">
+                        <option value="codes-provided" id="codesProvidedOption">Can provide access codes</option>
+                        <option value="meet-at-entrance" id="meetAtEntranceOption">Meet at entrance</option>
+                        <option value="someone-home" id="someoneHomeOption">Someone will be at home</option>
+                        <option value="neighbour" id="neighbourOption">Keys with neighbour</option>
+                        <option value="different-address" id="differentAddressOption">Pick up keys different address</option>
+                        <option value="return-keys" id="returnKeysOption">Pick up and return keys</option>
+                        <option value="hidden-keys" id="hiddenKeysOption">Keys hidden</option>
+                        <option value="other" id="otherOption">Other way of delivery</option>
+                    </select>
+                </div>
+            
+                <div id="codes-section">
+                    <label>
+                        <span id="gateCodeLabel">Gate Code</span> <br>
+                        <input type="text" name="gateCode" placeholder="01 Key 0985 Bell">
+                    </label>
+                    <label>
+                        <span id="entranceCodeLabel">Entrance Code</span> <br>
+                        <input type="text" name="entranceCode" placeholder="Key 0985 Bell">
+                    </label>
+                    <label>
+                        <span id="apartmentCodeLabel">Apartment Code</span> <br>
+                        <input type="text" name="apartmentCode" placeholder="Bell 0202">
+                    </label>
+                </div>
+    
+                <div id="access" style="display: none;">
+                    <label>
+                        <span id="additionalInfoLabel">Additional Information</span> <br>
+                    </label>
+                    <textarea name="accessInfo" data-lang-key="accessInfo" placeholder="Provide more infomation..."></textarea>
+                </div>
+            </section>
+
+            <!-- Contact -->
+            <section class="details">
+                <h2 id="contactDetailsSectionTitle">CONTACT DETAILS</h2>
+                <span id="phoneValidationMsg" style="display: none;"></span>
+                <div id="personal">
+                    <label><span id = "fullNameLabel">Full Name</span><br><input type="text" name="name" data-lang-key="name" placeholder="John Doe"></label>
+                    <div id="phone">
+                        <label for="telephone"><span id = "phoneNumberLabel">Phone Number</span></label>
+                        <div>
+                            <input type="text" id="countryCode" name="countryCode" placeholder="+1" maxlength="4">
+                            <input type="tel" id="telephone" name="telephone" data-lang-key="telephone" placeholder="555 555 555">
+                        </div>
+                    </div>
+                    <label>Email <br><input type="email" name="email" data-lang-key="email" placeholder="johndoe@gmail.com"></label>
+                </div>
+                <div class="textarea-container">
+                    <label id="add-text">Additional Information <br></label>
+                    <textarea name="additionalInfo" data-lang-key="additionalInfo"
+                        placeholder="Contact me using WhatsApp/Telegram/Viber. 
+Don't not clean the pressure cooker. 
+The door need a littlebit of 'pulling' tactic to unclock it. e.t.c"></textarea>
+                </div>
+            </section>
+
+            <section id="small-sum"></section>
+
+            <!-- Payment Method -->
+            <section class="payment-method">
+                <h2 id="select-payment">SELECT PAYMENT METHOD</h2>
+                <span class="dynamic-message" id="dynamic-message-2"></span>
+                <div class="lab">
+                    <label><input type="radio" name="paymentMethod" value="cash" required><span id="cash">Cash</span></label>
+                    <label><input type="radio" name="paymentMethod" value="card"><span id="card">Card/Apple Pay/Google Pay</span></label>
+                    <label><input type="radio" name="paymentMethod" value="blik"><span id="blik">BLIK</span></label>
+                </div>
+            </section>            
+
+            <!-- Agreement -->
+            <section id="consent">
+                <span class="dynamic-message" id="dynamic-message-3"></span>
+                <div>
+                    <label>
+                        <input type="checkbox" name="terms" required>
+                        <span id="terms-en"><span>By placing an order I agree with the</span><a href="https://sites.google.com/view/swiftscrubco/public-contract" target="_blank"> Public offer agreement</a> and <a href="https://sites.google.com/view/swiftscrubco/privacy-policy" target="_blank">Privacy Policy</a>.</span>
+                        <span id="terms-ru" style="display: none;"><span>Размещая заказ, я соглашаюсь с</span><a href="https://sites.google.com/view/swiftscrubco-pl/warunki-i-postanowienia" target="_blank"> Договором публичной оферты</a> и <a href="https://sites.google.com/view/swiftscrubco-pl/polityka-prywatno%C5%9Bci" target="_blank">Политикой конфиденциальности</a>.</span>
+                        <span id="terms-pl" style="display: none;"><span>Składając zamówienie, wyrażam zgodę na</span><a href="https://sites.google.com/view/swiftscrubco-pl/warunki-i-postanowienia" target="_blank"> Umowę o świadczenie usług</a> oraz <a href="https://sites.google.com/view/swiftscrubco-pl/polityka-prywatno%C5%9Bci" >Politykę prywatności</a>.</span>
+                        <br>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="marketingConsent">
+                        <span id="marketingConsent">I consent to the processing of my personal data for marketing purposes by the administrator.</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Order Button -->
+            <section id="placingOrder">
+                <span class="dynamic-message" id="threshold-message"></span>
+                <div>
+                    <button type="submit" id="makeOrder" disabled><span id="orderButton">MAKE ORDER FOR PLN </span><a id="pay-amount"></a></button>
+                </div>
+            </section>
+        </form>
+
+        <!-- Aside Summary Section -->
+        <aside>
+          <div id="summary-card">
+            <h2 id="h2-summary">SUMMARY</h2>
+              <div id="orders">
+                <div class="summary-item">
+                    <span id="summary-rooms">Rooms:</span>
+                    <span id="summaryRooms">1</span>
+                </div>
+                <div class="summary-item">
+                    <span id="summary-bathrooms">Bathrooms:</span>
+                    <span id="summaryBathrooms">1</span>
+                </div>
+                <div class="summary-item">
+                    <span id="summary-kitchen">Kitchen:</span>
+                    <span id="summaryKitchen">✔</span>
+                </div>
+                <div class="summary-item">
+                  <span id="summary-corridor">Corridors:</span>
+                  <span id="summaryCorridor">✔</span>
+                </div>
+                <div class="summary-item">
+                  <span id="summary-balcony">Balcony:</span>
+                  <span id="summaryBalcony">✖</span>
+                </div>
+                <div class="summary-item">
+                  <span id="summary-garage">Garage:</span>
+                  <span id="summaryGarage">✖</span>
+                </div>
+                <div class="summary-item">
+                  <span id="summary-basement">Basement:</span>
+                  <span id="summaryBasement">✖</span>
+                </div>
+                <div class="summary-item">
+                  <span id="summaryApartmentType">Private House:</span>
+                  <span id="summaryPrivateHouse">✖</span>
+                </div>
+                <div class="summary-item">
+                  <span id="summary-bins">Trash Bins:</span>
+                  <span id="summaryBins">✔</span>
+                </div>
+                <div class="summary-item">
+                  <span id="summary-frequency">Frequency:</span>
+                  <span id="summaryFrequency">1</span>
+                </div>
+            </div>
+            <div id="calculations">
+                <hr>
+                <div class="calculation-item">
+                    <span id="summary-total">Total Price</span>
+                    <span><span id="total">0.00</span> PLN</span>
+                </div>
+                <div class="calculation-item">
+                    <span id="summary-discount">Discount</span>
+                    <span><span id="discount">0.00</span> PLN</span>
+                </div>
+                <hr>
+                <div class="calculation-item" id="total-to-pay">
+                    <span id="summary-to-pay">To Pay</span>
+                    <span><span id="to-pay">0.00</span> PLN</span>
+                </div>
+            </div>
+          </div>
+        </aside>
+    </div>
+
+    <script>
+        // JavaScript code for dynamic functionalities
+        document.addEventListener('DOMContentLoaded', () => {
+            // Core Configuration
+            const CONFIG = {
+                baseRates: {
+                    regular: 139.00,
+                    deep: 419.00,
+                    custom: 0,
+                    postRenovation: 0
+                },
+                additionalRoomCosts: {
+                    regular: 35.45,
+                    deep: 50.00,
+                    custom: 36.20,
+                    postRenovation: 50.20
+                },
+                bathroomCosts: {
+                    regular: 25.15,
+                    deep: 39.45,
+                    custom: 25.85,
+                    postRenovation: 38.55 
+                },
+                kitchenCosts: {
+                    custom: 41.50,
+                    postRenovation: 54.55
+                },
+                corridorCosts: {
+                    custom: 38.15,
+                    postRenovation: 49.35
+                },
+                balconyCosts: {
+                    regular: 35.30,
+                    deep: 50.00,
+                    custom: 36.20,
+                    postRenovation: 50.55
+                },
+                garageCosts: {
+                    regular: 50.15,
+                    deep: 80.20,
+                    custom: 51.75,
+                    postRenovation: 80.00
+                },
+                basementCosts: {
+                    regular: 70.35,
+                    deep: 100.00,
+                    custom: 70.10,
+                    postRenovation: 101.65
+                },
+                microservicePrices: {
+                    microwave: 20,
+                    oven: 41,
+                    washingDishes: 25,
+                    kitchenCabinets: 52,
+                    refrigerator: 40,
+                    closet: 25,
+                    windows: {
+                        small: 20,
+                        medium: 35,
+                        balconyDoors: 48
+                    },
+                    wardrobe: 30,
+                    bureau: 17,
+                    toiletCabinets: 20,
+                    additionalHours: 48,
+                    wateringPlants: 12,
+                    organicProducts: 79,
+                    orderVacuum: 38,
+                    cleaningKit: 27,
+                    ownKit: 0
+                },
+                apartmentRates: {
+                    privateHouse: 1.24,
+                    studioApartment: 9.50,
+                    privateApartment: 1.02,
+                    commercialApartment: 1.10
+                },
+                discountRates: {
+                    2: 0.05,
+                    3: 0.10,
+                    4: 0.15,
+                    5: 0.20,
+                    6: 0.25,
+                    7: 0.30
+                },
+                extraDiscount: {
+                    2: 14.50
+                },
+                thresholds: {
+                    custom: 140.00,
+                    postRenovation: 150.00
+                },
+                sizeLimitForExtraCharge: 20, // Square meters
+                extraChargeFactors: {
+                    regular: 7,
+                    custom: 7, // d value for regular/custom cleaning
+                    deep: 8,
+                    postRenovation: 8 // d value for deep/post renovation cleaning
+                }
+            };
+
+            const warningTranslations = {
+                en: {
+                    postRenovationThresholdMessage: (threshold) => `**You need to go above PLN ${threshold} total under this custom/post-renovation option for order to be accepted!**`
+                },
+                ru: {
+                    postRenovationThresholdMessage: (threshold) => `**Вам нужно превысить PLN ${threshold} в общей сложности при выборе этой опции (индивидуальная/после ремонта), чтобы заказ был принят!**`
+                },
+                pl: {
+                    postRenovationThresholdMessage: (threshold) => `**Musisz przekroczyć PLN ${threshold} w sumie przy wyborze tej opcji (indywidualna/po remoncie), aby zamówienie zostało przyjęte!**`
+                }
+            };
+
+            const technicalTranslations = {
+                en: {
+                    technicalMaintenanceMessage: "Technical maintenance in process, choose other payment option."
+                },
+                ru: {
+                    technicalMaintenanceMessage: "Техническое обслуживание в процессе, выберите другой способ оплаты."
+                },
+                pl: {
+                    technicalMaintenanceMessage: "Trwają prace techniczne, wybierz inną opcję płatności."
+                }
+            };
+
+            const submissionMessage = {
+                success: "Zamówienie zostało złożone pomyślnie. Dziękujemy!",
+                fail: "Przepraszamy, wystąpił błąd. Proszę spróbować ponownie.\nProszę skontaktować się z zespołem wsparcia."
+            }
+
+            // Utility Functions
+            const $ = selector => document.querySelector(selector);
+            const $$ = selector => document.querySelectorAll(selector);
+
+            // Counter Adjustment Function
+            function adjustCounter(elementId, delta) {
+                const input = $(`#${elementId}`);
+
+                const cleaningType = $("input[name='cleaningType']:checked").value; // Get the selected cleaning type
+
+                // Determine the minimum value based on the cleaning type
+                const minValue = (elementId === 'rooms' || elementId === 'bathrooms') 
+                    ? (cleaningType === 'regular' || cleaningType === 'deep') ? 1 : 0 
+                    : 0; // Default to 0 for other counters
+
+                let currentValue = parseInt(input.value) || 0; // Ensure currentValue is a number
+                // Calculate new value, ensuring it does not go below minValue
+                const newValue = Math.max(minValue, currentValue + delta);
+                
+                // const newValue = Math.max(0, currentValue + delta); // Allow zero for custom cleaning
+                input.value = newValue;
+                updateSummary();
+            }
+            
+            // Function to handle increment and decrement
+            function handleCounter(button, input, step = 1) {
+                button.addEventListener("click", function () {
+                let currentValue = parseInt(input.value, 10);
+                if (button.classList.contains("minus")) {
+                    currentValue = Math.max(0, currentValue - step); // Ensure value doesn't go below 1
+                } else if (button.classList.contains("plus")) {
+                    currentValue += step;
+                }
+                    input.value = currentValue;
+                });
+            }
+
+            // Reset Form for Custom and Post-Renovation Cleaning
+            function resetFormForCustomOrPost() {
+                $('#rooms').value = '0';
+                $('#bathrooms').value = '0';
+                $('#kitchen').checked = false;
+                $('#corridor').checked = false;
+                
+                // Clear summary and bill
+                $('#summaryKitchen').textContent = 'No';
+                $('#summaryCorridor').textContent = 'No';
+                
+                // Do not call updateSummary() here to avoid infinite recursion
+                const currentLang = document.documentElement.lang;
+                const threshold = CONFIG.thresholds.postRenovation; // Get the threshold from config
+                const userMessage = warningTranslations[currentLang].postRenovationThresholdMessage(threshold);
+                const messageElement = $('#dynamic-message-0');
+
+                // Set the message in the HTML element
+                messageElement.innerHTML = userMessage;
+                messageElement.style.opacity = '1';
+
+                // Function to fade out the message after 10 seconds
+                setTimeout(() => {
+                    messageElement.style.opacity = '0'; // Start fading out
+                }, 10000); // 10 seconds delay
+            }
+
+            // Calculate Base Price Based on Cleaning Type
+            function calculateBasePrice() {
+                const cleaningType = $('input[name="cleaningType"]:checked').value;
+                
+                let basePrice = CONFIG.baseRates[cleaningType] || 0; // Default to 0 if cleaningType is invalid
+
+                if (cleaningType === 'regular' || cleaningType === 'deep') {
+                    const rooms = parseInt($('#rooms').value) || 1; // Default to 1 if empty
+                    const bathrooms = parseInt($('#bathrooms').value) || 1; // Default to 1 if empty
+                    basePrice += ((rooms - 1) * CONFIG.additionalRoomCosts[cleaningType]) + // Subtract 1 because the first room is included in the base price
+                                ((bathrooms - 1) * CONFIG.bathroomCosts[cleaningType]); // Subtract 1 because the first bathroom is included in the base price
+                    
+                } else  {
+                    const roomCounter = parseInt($('#rooms').value) || 0;
+                    const bathroomCounter = parseInt($('#bathrooms').value) || 0;
+                    basePrice += ((roomCounter * CONFIG.additionalRoomCosts[cleaningType]) + bathroomCounter * CONFIG.bathroomCosts[cleaningType]); 
+                }
+                
+                return basePrice;
+            }
+
+            function promptForSize(feature) {
+                let validSize = false;
+                const sizeInput = $(`#${feature.charAt(0).toLowerCase()}Size`);
+            
+                while (!sizeInput) {
+                    const size_msg1 = $('#size-message-1');
+                    const size_msg2 = $('#size-message-2');
+                    const msg = `Proszę wprowadzić rozmiar (m²) dla ${feature.charAt(0).toUpperCase() + feature.slice(1)} najpierw!`;
+
+                    if (window.innerWidth < 900) {
+                        size_msg2.textContent = msg;
+                        size_msg2.style.display = 'block';
+                        setTimeout(() => {
+                            size_msg2.style.opacity = '0'; 
+                            setTimeout(() => {
+                                size_msg2.style.display = 'none'; 
+                                size_msg2.style.opacity = '1'; 
+                            }, 1000); 
+                        }, 8000);
+                    } else {
+                        size_msg1.textContent = msg;
+                        size_msg1.style.display = 'block';
+                        setTimeout(() => {
+                            size_msg1.style.opacity = '0'; 
+                            setTimeout(() => {
+                                size_msg1.style.display = 'none'; 
+                                size_msg1.style.opacity = '1'; 
+                            }, 1000); 
+                        }, 8000);
+                    }
+            
+                    if (sizeInput === null) {
+                        $(`#${feature}`).checked = false;
+                        return; 
+                    }
+                }
+            }    
+
+            // Calculate Additional Costs Based on Selected Features
+            function calculateAdditionalCosts() {
+                let additionalCost = 0;
+
+                // Kitchen
+                if ($('#kitchen').checked) {
+                    additionalCost += CONFIG.kitchenCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                }
+
+                // Corridors
+                if ($('#corridor').checked) {
+                    additionalCost += CONFIG.corridorCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                }
+                
+                // Balcony
+                if ($('#balcony').checked) {
+                    // Check if the size input is valid; if not, prompt for size
+                    const balconySize = parseInt($('#balconySize').value);
+
+                    if (isNaN(balconySize) || balconySize <= 0) {
+                        promptForSize('balcony');
+                    } else {
+                        // If a valid size is entered, calculate the cost
+                        const defaultCost = CONFIG.balconyCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                        additionalCost += calculateSizeBasedCost(balconySize, defaultCost);
+                    }
+                }
+                
+                // Garage
+                if ($('#garage').checked) {
+                    const garageSize = parseInt($('#garageSize').value);       
+
+                    if (isNaN(garageSize) || garageSize <= 0) {
+                        promptForSize('garage');
+                    } else {
+                        const defaultCost = CONFIG.garageCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                        additionalCost += calculateSizeBasedCost(garageSize, defaultCost);
+                    }
+                }
+                
+                // Basement
+                if ($('#basement').checked) {
+                    const basementSize = parseInt($('#basementSize').value);
+                    
+                    if (isNaN(basementSize) || basementSize <= 0) {
+                        promptForSize('basement');
+                    } else {
+                        const defaultCost = CONFIG.basementCosts[$('input[name="cleaningType"]:checked').value] || 0;
+                        additionalCost += calculateSizeBasedCost(basementSize, defaultCost);
+                    }
+                }
+
+                return additionalCost;
+            }
+
+            // Helper function to calculate size-based cost
+            function calculateSizeBasedCost(size, defaultCost) {
+                if (size > CONFIG.sizeLimitForExtraCharge) {
+                    const extraChargeFactor = CONFIG.extraChargeFactors[$('input[name="cleaningType"]:checked').value];
+                    return defaultCost + ((size - CONFIG.sizeLimitForExtraCharge) * extraChargeFactor);
+                }
+                return defaultCost;
+            }
+
+            // Microservices Price Calculation
+            function calculateMicroservicesCost() {
+                let total = 0;
+
+                // Iterate over all checked checkboxes in the microservices section
+                $$('.microservices input[type="checkbox"]:checked').forEach(checkbox => {
+                    
+                    // Handle Windows checkbox
+                    if (checkbox.name === "windows" && checkbox.checked) {
+                        // Call the function to calculate windows cost
+                        const windowsCost = calculateWindowsCost();
+                        total += windowsCost;
+                    }   // Handle Additional Hours checkbox
+                    else if (checkbox.name === "additionalHours" && checkbox.checked) {
+                        // Call the function to calculate additional hours cost
+                        const additionalHoursCost = calculateAdditionalHoursCost();
+                        total += additionalHoursCost;
+                    }
+                    else {
+                        // Add the base price of the microservice
+                        total += CONFIG.microservicePrices[checkbox.name] || 0;
+                    }
+                });
+
+                return total;
+            }
+
+            // Example functions for calculating windows and additional hours costs
+            function calculateWindowsCost() {
+                // Logic to calculate the cost of windows
+                const smallWindows = parseInt($("#small-windows").value) || 0;
+                const mediumWindows = parseInt($("#medium-windows").value) || 0;
+                const balconyDoors = parseInt($("#balcony-doors").value) || 0;
+
+                const smallWindowPrice = CONFIG.microservicePrices.windows.small || 0;
+                const mediumWindowPrice = CONFIG.microservicePrices.windows.medium || 0;
+                const balconyDoorPrice = CONFIG.microservicePrices.windows.balconyDoors || 0;
+
+                return (smallWindows * smallWindowPrice) + (mediumWindows * mediumWindowPrice) + (balconyDoors * balconyDoorPrice);
+            }
+
+            function calculateAdditionalHoursCost() {
+                // Logic to calculate the cost of additional hours
+                const cleaners = parseInt($("#cleaners").value) || 0;
+                const hours = parseInt($("#hours").value) || 0;
+
+                const cleanerHourlyRate = CONFIG.microservicePrices.additionalHours || 0;
+
+                return cleaners * hours * cleanerHourlyRate;
+            }
+
+            // Frequency Discount Calculation
+            function applyFrequencyDiscount(basePrice) {
+                const visits = parseInt($('#frequencyCount').value) || 1; // Default to one visit if empty or invalid.
+                const period = $('#frequencyPeriod').value; // 'week' or 'month'
+
+                // Calculate billing amount
+                let billing = basePrice * visits;
+                
+                // Update total display
+                $('#total').textContent = `${(billing ? billing + CONFIG.extraDiscount[2] : billing).toFixed(2)}`;
+                $('#summaryFrequency').textContent = visits.toString(); // Ensure it's a string
+
+                // Calculate discount
+                const discountRate = discountHelper(visits, period);
+                const discount = billing * discountRate;
+                
+                // Update discount display
+                $('#discount').textContent = `${(billing ? discount + CONFIG.extraDiscount[2] : discount).toFixed(2)}`;
+
+                // Return the final amount after applying the discount
+                return billing * (1 - discountRate);
+            }
+
+            function discountHelper(visits, period) {
+
+                let rate = 0;
+                // Weekly Discounts
+                if (period === 'week') {
+                    if (visits == 2 || visits == 3) {
+                        rate = 0.03; // 3% discount
+                    } else if (visits == 4) {
+                        rate = 0.05; // 5% discount
+                    } else if (visits >= 5) {
+                        rate = 0.1; // 10% discount
+                    }
+                }
+                // Monthly Discounts
+                else if (period === 'month') {
+                    if (visits >= 3 && visits <= 4) {
+                        rate = 0.03; // 3% discount
+                    } else if (visits >= 5 && visits <= 10) {
+                        rate = 0.05; // 5% discount
+                    } else if (visits >= 11) {
+                        rate = 0.10; // 10% discount
+                    }
+                }
+
+                return rate;
+            }
+            
+            // Total Price Calculation
+            function calculateTotalPrice() {
+                const basePrice = calculateBasePrice();
+                let additionalCosts = calculateAdditionalCosts();
+                const microservicesCost = calculateMicroservicesCost() || 0;
+                
+                let totalPrice = applyScaleTax(basePrice + additionalCosts + microservicesCost);
+
+                totalPrice = applyFrequencyDiscount(totalPrice);
+                
+                return totalPrice || 0; 
+            }
+
+            function validateCountersAndCalculate() {
+                const rooms = parseInt($('#rooms').value) || 0; 
+                const bathrooms = parseInt($('#bathrooms').value) || 0; 
+            
+                // If rooms or bathrooms are below 1, set them to 1 and tick the kitchen box
+                if (rooms < 1 || bathrooms < 1) {
+                    $('#rooms').value = '1';
+                    $('#bathrooms').value = '1';
+                    $('#summaryRooms').textContent = '1'; 
+                    $('#summaryBathrooms').textContent = '1';
+                }
+                
+                $('#kitchen').checked = true;
+                $('#corridor').checked = true;
+
+                // Get the selected cleaning type
+                const cleaningType = $('input[name="cleaningType"]:checked').value;
+            
+                // Calculate total price
+                const basePrice = CONFIG.baseRates[cleaningType] || 0; 
+                const roomCharge = CONFIG.additionalRoomCosts[cleaningType] || 0; 
+                const bathroomCharge = CONFIG.bathroomCosts[cleaningType] || 0; 
+            
+                // Calculate total price
+                const totalRooms = parseInt($('#rooms').value) || 1; 
+                const totalBathrooms = parseInt($('#bathrooms').value) || 1;
+                
+                //Calculating price from balcony, garage or bassement.
+                const extraSpaceCosts = calculateAdditionalCosts();
+
+                let totalBill = basePrice +
+                    ((totalRooms - 1) * roomCharge) + // Subtract 1 because the first room is included in the base price
+                    ((totalBathrooms - 1) * bathroomCharge) + // Subtract 1 because the first bathroom is included in the base price
+                    extraSpaceCosts;
+            
+                $('#total').textContent = `${(totalBill ? totalBill + CONFIG.extraDiscount[2] : totalBill).toFixed(2)}`;
+
+                totalBill = applyScaleTax(totalBill);
+
+                $('#total').textContent = `${(totalBill+14.50).toFixed(2)}`;
+                
+                return totalBill || 0; // Ensure totalPrice is never NaN
+            }
+
+            function applyScaleTax(amount){
+                // Apply 24% tax for Legal Entity
+                const isLegalEntity = $('input[name="userType"]:checked').value === 'legalEntity';
+                if (isLegalEntity) {
+                    amount *= 1.24; 
+                }
+                
+                const aptType = $('input[name="apartmentType"]:checked').value;
+                // Apply 24% multiplier for Private House
+                if (aptType === 'Private House') {
+                    amount *= CONFIG.apartmentRates.privateHouse; 
+                }
+
+                if (aptType === 'Studio Apartment') {
+                    amount -= CONFIG.apartmentRates.studioApartment;
+                }
+
+                if (aptType === 'Private Apartment') {
+                    amount *= CONFIG.apartmentRates.privateApartment;
+                }
+
+                if (aptType === 'Commercial Apartment') {
+                    amount *= CONFIG.apartmentRates.commercialApartment;
+                }
+                return amount;
+            }
+
+            // Update Summary Section
+            function updateSummary() {
+                $('#summaryRooms').textContent = $('#rooms').value || 1; // Default to 1 if empty
+                $('#summaryBathrooms').textContent = $('#bathrooms').value || 1; // Default to 1 if empty
+                $('#summaryKitchen').textContent = $('#kitchen').checked ? '✔' : '✖';
+                $('#summaryCorridor').textContent = $('#corridor').checked ? '✔' : '✖';
+                $('#summaryBalcony').textContent = $('#balcony').checked ? '✔' : '✖';
+                $('#summaryGarage').textContent = $('#garage').checked ? '✔' : '✖';
+                $('#summaryBasement').textContent = $('#basement').checked ? '✔' : '✖';
+
+                if ($('input[name="cleaningType"]:checked')) {
+                    $('#summaryApartmentType').textContent = $('input[name="apartmentType"]:checked').value;
+                    $('#summaryPrivateHouse').textContent = '✔';
+                }
+                const totalPrice = calculateTotalPrice();
+                $('#to-pay').textContent = `${totalPrice.toFixed(2)}`;
+                $('#pay-amount').textContent = `${totalPrice.toFixed(2)}`;
+                
+                toggleOrderButton();
+                handlePaymentMethodSelection(); // Check payment method selection status.
+            }
+
+            // Update Bill On Summary Section
+            function updateList(amount) {
+                $('#summaryKitchen').textContent = $('#kitchen').checked ? '✔' : '✖';
+
+                const bill = amount;
+                $('#to-pay').textContent = `${bill.toFixed(2)}`;
+                $('#pay-amount').textContent = `${bill.toFixed(2)}`;
+                
+                toggleOrderButton();
+                handlePaymentMethodSelection(); // Check payment method selection status.
+            }
+            
+            // Handle Payment Method Selection Logic
+            function handlePaymentMethodSelection() {
+                const paymentMethods = $$('.payment-method input[type="radio"]');
+                const messageElement = $('#dynamic-message-2');
+
+                paymentMethods.forEach(method => {
+                    method.addEventListener('change', () => {
+                        // Check if the selected method is 'card' or 'blik'
+                        if (method.value === 'card' || method.value === 'blik') {
+                            messageElement.style.opacity = '1';
+
+                            // Clear previous messages
+                            const currentLang = document.documentElement.lang;
+                            messageElement.textContent = technicalTranslations[currentLang].technicalMaintenanceMessage;
+                            
+                            // Show alert only if it hasn't been shown for this selection
+                            if (!method.dataset.alertShown) {
+                                alert(technicalTranslations[currentLang].technicalMaintenanceMessage);
+                                method.dataset.alertShown = true; // Set flag to prevent multiple alerts
+                            }
+                        } else {
+                            // Reset the alert flag if another payment option is selected
+                            method.dataset.alertShown = false;
+                            messageElement.style.opacity = '0';
+                        }
+                    });
+                });
+            }
+
+        // Toggle Order Button based on Consent and Form Validity
+        function toggleOrderButton() {
+            const isTermsChecked = $('input[name="terms"]').checked;
+            const isConsentChecked = $('input[name="marketingConsent"]').checked;
+            const isFormValid =
+                isTermsChecked &&
+                isConsentChecked &&
+                $('input[name="name"]').value &&
+                $('input[name="telephone"]').value &&
+                $('input[name="street"]').value &&
+                $('input[name="buildingNumber"]').value &&
+                $('input[name="apartmentNumber"]').value 
+
+            $('#makeOrder').disabled = !isFormValid;
+        }
+
+            // Function to handle cleaning type selection
+            function handleCleaningTypeSelection() {
+                const cleaningType = $('input[name="cleaningType"]:checked').value;
+                const microservicesSection = $('#microservices-section');
+                const messageElement = $('#dynamic-message-1');
+
+                if (cleaningType === 'regular' || cleaningType === 'deep') {
+                    microservicesSection.classList.add('greyed-out'); 
+                    messageElement.textContent = "applicable under custom or post-renovation cleaning option.";
+                } else {
+                    microservicesSection.classList.remove('greyed-out'); 
+                    messageElement.textContent = ""; 
+                }
+            }
+
+            // Validate Form Function
+            function validateForm() {
+                let isValid = true;
+
+                // Helper function to display error messages
+                function showError(input, message) {
+                    const errorElement = document.createElement('div');
+                    errorElement.className = 'error-message';
+                    errorElement.style.color = 'red';
+                    errorElement.textContent = message;
+                    input.parentElement.appendChild(errorElement);
+                    isValid = false;
+                }
+
+                // Helper function to clear existing error messages
+                function clearErrors() {
+                    const errorMessages = $$('.error-message');
+                    errorMessages.forEach(error => error.remove());
+                }
+
+                // Clear existing errors before validation
+                clearErrors();
+
+                // Validate Name
+                const nameInput = $('input[name="name"]');
+                if (!nameInput.value.trim()) {
+                    showError(nameInput, 'Name is required.');
+                }
+
+                // Validate Telephone
+                const telephoneInput = $('input[name="telephone"]');
+                if (!telephoneInput.value.trim()) {
+                    showError(telephoneInput, 'Telephone is required.');
+                } else if (!validatePhoneNumber()) { // Basic phone number validation
+                    showError(telephoneInput, 'Invalid telephone number.');
+                }
+
+                // Validate Email
+                const emailInput = $('input[name="email"]');
+                if (!emailInput.value.trim()) {
+                    showError(emailInput, 'Email is required.');
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) { // Basic email validation
+                    showError(emailInput, 'Invalid email address.');
+                }
+
+                // Validate Street
+                const streetInput = $('input[name="street"]');
+                if (!streetInput.value.trim()) {
+                    showError(streetInput, 'Street is required.');
+                }
+
+                // Validate Building Number
+                const buildingNumberInput = $('input[name="buildingNumber"]');
+                if (!buildingNumberInput.value.trim()) {
+                    showError(buildingNumberInput, 'Building number is required.');
+                }
+
+                // Validate Apartment Number
+                const apartmentNumberInput = $('input[name="apartmentNumber"]');
+                if (!apartmentNumberInput.value.trim()) {
+                    showError(apartmentNumberInput, 'Apartment number is required.');
+                }
+
+                // Validate Postal Code
+                const postalCodeInput = $('input[name="postalCode"]');
+                if (!postalCodeInput.value.trim()) {
+                    showError(postalCodeInput, 'Postal code is required.');
+                } else if (!/^\d{2}-\d{3}$/.test(postalCodeInput.value.trim())) { 
+                    showError(postalCodeInput, 'Invalid postal code (expected format: XX-XXX).');
+                }
+
+                // Validate Cleaning Date
+                const cleaningDateInput = $('#cleaningDate');
+                if (!cleaningDateInput.value.trim()) {
+                    showError(cleaningDateInput, 'Cleaning date is required.');
+                }
+
+                // Validate Cleaning Time
+                const cleaningTimeInput = $('#cleaningTime');
+                if (!cleaningTimeInput.value.trim()) {
+                    showError(cleaningTimeInput, 'Cleaning time is required.');
+                }
+
+                // Validate Terms and Conditions
+                const termsCheckbox = $('input[name="terms"]');
+                if (!termsCheckbox.checked) {
+                    showError(termsCheckbox, 'You must agree to the terms and conditions.');
+                }
+
+                const messageElement = $('#threshold-message');
+
+                const userMessage = `**Amount is below minimum threshold - PLN ${CONFIG.baseRates.regular} required to place an order!**`;
+                if (calculateTotalPrice() < CONFIG.baseRates.regular) {
+                    messageElement.innerHTML = userMessage;
+                    messageElement.style.opacity = '1';
+
+                    setTimeout(() => {
+                        messageElement.style.opacity = '0'; 
+                    }, 8000); 
+                }
+
+                // Return true if the form is valid, otherwise false
+                return isValid;
+            }
+
+            // Function to handle checkbox changes
+            function handleCheckboxChange(event) {
+                const cleaningType = $("input[name='cleaningType']:checked").value; 
+                const isRegularOrDeep = (cleaningType === 'regular' || cleaningType === 'deep');
+
+                // Check if the checkbox being changed is for Kitchen or Corridors
+                if (isRegularOrDeep && (event.target.id === 'kitchen' || event.target.id === 'corridor')) {
+                    // Prevent the checkbox from being unchecked
+                    if (!event.target.checked) {
+                        event.preventDefault(); // Prevent default action
+                        event.target.checked = true; 
+                        alert("Kitchen and corridor are part of this package, for specific type of cleaning go under Custom cleaning.");
+                    }
+                }
+            }
+
+            function getMainRooms() {
+                const rooms = $('#rooms').value;
+                const bathrooms = $('#bathrooms').value;
+
+                return `rooms X${rooms}, bathrooms X${bathrooms}`;
+            }
+
+            function getAddressData() {
+                let street = $("input[name='street']").value.trim(); 
+                let building = $("input[name='buildingNumber']").value.trim();
+                let apartment = $("input[name='apartmentNumber']").value.trim();
+                let postal = $("input[name='postalCode']").value.trim();
+                let accessInfo = $('#entry-method').value;
+
+                let fullAddress = `${street}, ${building}, ${apartment}, ${postal}`;
+
+                if(accessInfo === 'codes-provided') {
+                    let gatecode = $("input[name='gateCode']").value.trim();
+                    let entrancecode = $("input[name='entranceCode']").value.trim();
+                    let apartmentcode = $("input[name='apartmentCode']").value.trim();
+                    fullAddress += ` - G: ${gatecode} | E: ${entrancecode} | A: ${apartmentcode}`;
+                    console.log(fullAddress);
+                }
+
+                return fullAddress;
+            }
+
+            function getExtraRoomsData() {
+                let extraRoomsData = [];
+                let extraRooms = $$("#extra-rooms input[type='checkbox']:checked");
+
+                extraRooms.forEach(room => {
+                    let roomName = room.name; // Get the name of the room
+                    let sizeInput = $("#" + roomName + "Size"); // Find the associated size input
+
+                    if (roomName == "kitchen") {
+                        extraRoomsData.push(`${roomName}`);
+                    }
+                    if (sizeInput && sizeInput.value) {
+                        extraRoomsData.push(`${roomName} ${sizeInput.value}`);
+                    }
+                    if (roomName == "corridor") {
+                        extraRoomsData.push(`${roomName}s`);
+                    }
+                });
+
+                return extraRoomsData;
+            }
+
+            function getMicroservicesData() {
+                let microservicesData = [];
+                let microservices = $$("#microservices input[type='checkbox']:checked");
+
+                microservices.forEach(service => {
+                    let serviceName = service.name; 
+
+                    if(serviceName === 'windows') {
+                        const smallWindows = parseInt($("#small-windows").value) || 0;
+                        const mediumWindows = parseInt($("#medium-windows").value) || 0;
+                        const balconyDoors = parseInt($("#balcony-doors").value) || 0;
+
+                        // Add window counts to the array if they are greater than 0
+                        if (smallWindows > 0) microservicesData.push(`small-windows X${smallWindows}`);
+                        if (mediumWindows > 0) microservicesData.push(`medium-windows X${mediumWindows}`);
+                        if (balconyDoors > 0) microservicesData.push(`balcony-doors X${balconyDoors}`);
+                    }
+                    else if (serviceName === 'additionalHours') {
+                        const cleaners = parseInt($("#cleaners").value) || 0;
+                        const hours = parseInt($("#hours").value) || 0;
+
+                        if (cleaners > 0 && hours > 0) microservicesData.push(`cleaners X${cleaners} - ${hours}hrs`);
+                    }
+                    else {
+                        microservicesData.push(`${serviceName}`);
+                    }
+                });
+
+                return microservicesData;
+            }
+
+            function getAdditonalsData() {
+                let additionalsNameData = [];
+                let additionals = $$("#additionals input[type='checkbox']:checked");
+
+                additionals.forEach(additional => {
+                    let additionalsName = additional.name; 
+                    additionalsNameData.push(`${additionalsName}`);
+                });
+
+                return additionalsNameData;
+            }
+
+            function getFrequency() {
+                let count = $("#frequencyCount").value;
+                let period = $("#frequencyPeriod").value;
+                return `${count} / ${period}`;
+            }
+            
+            function getDateTime() {
+                let date = $("#cleaningDate").value;
+                let time = $("#cleaningTime").value;
+                return `${date} : ${time.replace(":", "")} hrs`;
+            }
+
+            function getPhoneNumber() {
+                const countryCode = $('#countryCode').value.trim();
+                const phone = $('#telephone').value.trim();
+                let completeNumber = `(${countryCode})${phone}`;
+                return completeNumber;
+            }
+
+            function getCleaningScale() {
+                let cleaningType = $('input[name="cleaningType"]:checked').value;
+                let housingType = $('input[name="apartmentType"]:checked').value;
+                return `${cleaningType} - ${housingType}`;
+            }
+
+            function getAdditionalInfo() {
+                let entryMethod = $('#entry-method').value;
+                let accessInfo = $('textarea[name="accessInfo"]').value;
+                let additionalInfo = $('textarea[name="additionalInfo"]').value
+
+                return `${entryMethod} 1. ${accessInfo} 2. ${additionalInfo}`;
+            }
+
+            function validatePhoneNumber() {
+                const countryCode = $('#countryCode').value.trim();
+                const phone = $('#telephone').value.trim();
+                const validationMessage = $('#phoneValidationMsg');
+
+                // Basic formatting: Allow digits, spaces, +, -, (, )
+                const allowedChars = /^[0-9\s+\-()]*$/;
+                if (!allowedChars.test(phone)) {
+                    validationMessage.textContent = "Invalid characters in phone number.";
+                    return false;
+                }
+
+                // Remove all non-digit characters to check length accurately
+                const cleanedNumber = phone.replace(/\D/g, '');
+
+                // Define minimum and maximum length (adjust as needed)
+                const minLength = 7;
+                const maxLength = 15;
+
+                if (cleanedNumber.length < minLength || cleanedNumber.length > maxLength) {
+                    validationMessage.textContent = `Phone number must be between ${minLength} and ${maxLength} digits.`;
+                    return false;
+                }
+
+                // (Optional) Check for a valid country code (you might want a more comprehensive list)
+                if (countryCode && !/^\+\d+$/.test(countryCode)) {
+                    validationMessage.textContent = "Invalid country code format.  Use + followed by digits.";
+                    return false;
+                }
+                return true;
+            }
+
+            // Get references to the form and overlay elements
+            const form = $('#cleaning-order-form');
+            const loadingOverlay = $('#loading-overlay');
+
+            // Function to show loading overlay
+            function showLoading() {
+                loadingOverlay.style.display = 'flex';
+                form.classList.add('loading'); 
+            }
+
+            // Function to hide loading overlay
+            function hideLoading() {
+                loadingOverlay.style.display = 'none';
+                form.classList.remove('loading'); 
+            }
+
+            function loadLanguage(lang) {
+            // Define the path to the language files
+            const langFilePath = `https://raw.githubusercontent.com/swiftscrub/package-builder/refs/heads/main/translations/${lang}.json`;
+
+            // Fetch the selected language file
+            fetch(langFilePath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Language file not found: ${langFilePath}`);
+                    }
+                    return response.json();
+                })
+                .then(translations => {
+                    // Update the UI with the translated strings
+                    applyTranslations(translations, lang);
+                })
+                .catch(error => {
+                    console.error("Error loading language file:", error);
+                    // Fallback to English if the selected language file fails to load
+                    fetch('./translations/en.json')
+                        .then(response => response.json())
+                        .then(translations => {
+                            applyTranslations(translations);
+                        })
+                        .catch(fallbackError => {
+                            console.error("Error loading fallback language file:", fallbackError);
+                        });
+                    });
+            }
+
+            function applyTranslations(translations, lang) {
+                // Iterate over all keys in the translations object
+                for (const key in translations) {
+                    if (translations.hasOwnProperty(key)) {
+                    // Handle elements with matching IDs (for text content)
+                    const elementsById = document.querySelectorAll(`[id="${key}"]`);
+                    elementsById.forEach(element => {
+                        element.innerText = translations[key];
+                    });
+
+                    // Handle elements with matching data-lang-key attributes (for placeholders)
+                    const elementsByDataKey = document.querySelectorAll(`[data-lang-key="${key}"]`);
+                    elementsByDataKey.forEach(element => {
+                        if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+                        // Update placeholder for input/textarea elements
+                        element.placeholder = translations[key];
+                        } else {
+                        // Update inner text for other elements
+                        element.innerText = translations[key];
+                        }
+                    });
+                    }
+                }
+
+                // Update the language attribute of the document
+                let previousLanguage = document.documentElement.lang;
+                document.documentElement.lang = lang;
+
+                // Handle terms visibility (if applicable)
+                $(`#terms-${previousLanguage}`).style.display = "none";
+                $(`#terms-${lang}`).style.display = "block";
+            }
+
+            // Event Listeners Setup Function
+            function setupEventListeners() {
+                // Counter Buttons for Rooms and Bathrooms
+                $$('.components .minus, .components .plus').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const inputElement = e.target.closest('div').querySelector('input[type="number"]');
+                        const delta = button.classList.contains('minus') ? -1 : 1;
+                        adjustCounter(inputElement.id, delta);
+                    });
+                });
+                
+                // Attach event listeners to Kitchen and Corridors checkboxes
+                $('#kitchen').addEventListener('change', handleCheckboxChange);
+                $('#corridor').addEventListener('change', handleCheckboxChange);
+
+                // Checkboxes and Radios
+                $$('input[type="checkbox"]:not([name="windows"]):not([name="additionalHours"]), input[type="radio"]').forEach(input => {
+                    input.addEventListener('change', updateSummary);
+                    input.addEventListener('change', toggleOrderButton); // Update button state on change
+                });
+
+                // Dedicated event listeners for Windows and Additional Hours checkboxes
+                const windowsCheckbox = $('input[name="windows"]');
+                const additionalHoursCheckbox = $('input[name="additionalHours"]');
+                const windowsSection = $("#windows-section");
+                const teamSection = $("#team-section");
+
+                // Toggle windows section visibility
+                windowsCheckbox.addEventListener("change", function () {
+                    if (windowsCheckbox.checked) {
+                        windowsSection.style.display = "block";
+                    } else {
+                        windowsSection.style.display = "none";
+                    }
+                });
+
+                // Toggle team section visibility
+                additionalHoursCheckbox.addEventListener("change", function () {
+                    if (additionalHoursCheckbox.checked) {
+                        teamSection.style.display = "block";
+                    } else {
+                        teamSection.style.display = "none";
+                    }
+                });
+
+                $('#entry-method').addEventListener('change', function() {
+                    const selectedValue = this.value;
+                    const codesSection = $('#codes-section');
+                    const textareaContainer = $('#access');
+
+                    if (selectedValue === 'codes-provided') {
+                        textareaContainer.style.display = 'none';
+                        codesSection.style.display = 'block';
+                    } else {
+                        textareaContainer.style.display = 'block';
+                        codesSection.style.display = 'none';
+                    }
+                });
+
+                // Cleaning Type Change Event Listener
+                $$('input[name="cleaningType"]').forEach(input => {
+                    input.addEventListener('change', () => {
+                        // Event Listener for Cleaning Type Change
+                        const selectedCleaningType = $('input[name="cleaningType"]:checked').value;
+
+                        // Check if the selected cleaning type is Custom or Post-Renovation
+                        if (selectedCleaningType === 'custom' || selectedCleaningType === 'postRenovation') {
+                            resetFormForCustomOrPost(); 
+                            updateSummary(); 
+                        }
+                        else {
+                            let value = validateCountersAndCalculate();
+                            updateList(value);
+                        }
+                        
+                        handleCleaningTypeSelection();
+                    });
+                });
+
+                // User Type Change Event Listener (Individual/Legal Entity)
+                $$('input[name="userType"]').forEach(input => {
+                    input.addEventListener('change', updateSummary); // Update summary when user type changes
+                });
+
+                // Cleaning Type Change Event Listener
+                $$('input[name="apartmentType"]').forEach(input => {
+                    input.addEventListener('change', updateSummary); // Update summary when apartment type changes
+                });
+
+                // Frequency Dropdown Event Listener
+                $('#frequencyCount').addEventListener('change', updateSummary);
+                $('#frequencyPeriod').addEventListener('change', updateSummary);
+
+                $('#langSwitcher').addEventListener('change', function() {
+                    loadLanguage(this.value);
+                });
+
+                $('#finish-button').addEventListener('click', function() {
+                    hideLoading();
+                    window.open('https://sites.google.com/view/swiftscrubco-pl/usługi/packagebuilder/podsumowanie', '_blank');
+                });
+                $('#cancel-button').addEventListener('click', hideLoading);
+
+                // Form Submission Handling
+                $('#cleaning-order-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (validateForm()) {
+
+                        showLoading();
+                        
+                        let mainRooms = getMainRooms();
+                        let microservicesData = getMicroservicesData();
+                        let additionalsData = getAdditonalsData();
+                        let selectedExtraRooms = getExtraRoomsData();
+                        let frequency = getFrequency();
+                        let dateTime = getDateTime();
+                        let addressData = getAddressData();
+                        let totalBilling = calculateTotalPrice();
+                        let phoneNumber = getPhoneNumber();
+                        let cleaningScale = getCleaningScale();
+                        let additionalInfo = getAdditionalInfo();
+                        
+                        var formData = {
+                            address: addressData,
+                            entity: $('input[name="userType"]:checked').value, 
+                            name: $('input[name="name"]').value,
+                            telephone: phoneNumber,
+                            email: $('input[name="email"]').value,
+                            cleaningType: cleaningScale,
+                            mainrooms: mainRooms,
+                            extrarooms: selectedExtraRooms.join(", "), 
+                            microservices: microservicesData.join(", "),
+                            additionalservices: additionalsData.join(", "),
+                            frequency: frequency,
+                            date: dateTime,
+                            paymentOption: $('input[name="paymentMethod"]:checked').value,
+                            totalPrice: totalBilling.toFixed(2),
+                            additionalInfo : additionalInfo,
+                        };
+
+                        fetch("https://script.google.com/macros/s/AKfycby2jrvlADLNr489chR5Hzd0uoL2R1IoECxFV9Xptr3bxzTEr43HRNEIScCuFg_DNMeD/exec", {
+                            method: "POST",
+                            mode: "no-cors",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(formData)
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            setTimeout(() => {
+                                // hideLoading();
+                                const confirmMsg = $("#submission-message");
+                                confirmMsg.innerHTML = submissionMessage.success;
+                                confirmMsg.style.color = 'yellow';
+                                $("#finish-button").style.display = 'block';
+                                window.alert("Zamówienie zostało złożone pomyślnie. Dziękujemy!");
+                                form.reset(); 
+                                updateSummary();
+
+                                //window.location.href = "https://sites.google.com/view/swiftscrubco-pl/us%C5%82ugi/packagebuilder/podsumowanie";
+                            }, 1500); 
+                        })
+                        .catch(error => {
+                            setTimeout(() => {
+                                // hideLoading();
+                                const failMsg = $("#submission-message");
+                                failMsg.innerHTML = submissionMessage.fail;
+                                failMsg.style.color = 'red';
+                                window.alert("Przepraszamy, wystąpił błąd. Proszę spróbować ponownie.\nProszę skontaktować się z zespołem wsparcia.");
+                            }, 1500); 
+                        });
+                    }
+                });
+            }
+
+            // Enable size input when checkbox is checked
+            function enableSizeInput(checkboxId, sizeInputId) {
+                const checkbox = $(`#${checkboxId}`);
+                const sizeInput = $(`#${sizeInputId}`);
+
+                checkbox.addEventListener('change', () => {
+                    sizeInput.disabled = !checkbox.checked;
+                    if (!checkbox.checked) {
+                        sizeInput.value = ''; // Clear size input when unchecked
+                    }
+                    updateSummary(); // Update the summary when the checkbox state changes
+                });
+            }
+
+            function moveAsideOnResize() {
+                const aside = $('aside');
+                const smallSum = $('#small-sum');
+                let summaryCard = $('#summary-card');
+
+                if (window.innerWidth < 900) {
+                    // If aside is not already in #small-sum, move it
+                    if (!smallSum.contains(summaryCard)) {
+                        aside.style.display = 'none';
+                        smallSum.appendChild(summaryCard);
+                    }
+                } else {
+                    // If aside is not in its original location, move it back
+                    aside.style.display = 'block';
+
+                    if (!aside.contains(summaryCard)) {
+                        smallSum.removeChild(summaryCard);
+                        aside.appendChild(summaryCard);
+                    }
+                }
+            }
+
+            // Call the function on initial load
+            moveAsideOnResize();
+            
+            // Call this function for Balcony, Garage, and Basement
+            enableSizeInput('balcony', 'balconySize');
+            enableSizeInput('garage', 'garageSize');
+            enableSizeInput('basement', 'basementSize');
+
+            // Initialize Event Listeners and Summary Update on Load
+            setupEventListeners();
+            handleCleaningTypeSelection();
+            updateSummary(); // Ensure summary is updated on load to prevent NaN display.
+
+        });
+
+        function moveAsideOnResize() {
+            const aside = document.querySelector('aside');
+            const smallSum = document.getElementById('small-sum');
+            let summaryCard = document.getElementById('summary-card');
+
+            if (window.innerWidth < 900) {
+                // If aside is not already in #small-sum, move it
+                if (!smallSum.contains(summaryCard)) {
+                    aside.style.display = 'none';
+                    smallSum.appendChild(summaryCard);
+                }
+            } else {
+                // If aside is not in its original location, move it back
+                aside.style.display = 'block';
+
+                if (!aside.contains(summaryCard)) {
+                    smallSum.removeChild(summaryCard);
+                    aside.appendChild(summaryCard);
+                }
+            }
+        }
+
+        // Call the function on window resize
+        window.addEventListener('resize', moveAsideOnResize);
+
+    </script>
+</body>
+</html>
